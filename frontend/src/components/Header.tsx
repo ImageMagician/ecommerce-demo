@@ -19,11 +19,12 @@ const Header = () => {
     ];
 
     return (
-        <header className="bg-gray-300">
+        <header className="border-b border-gray-200">
             <div className="flex items-center justify-between gap-4 max-w-7xl mx-auto">
-                <h1 className={`text-2xl px-4 py-2`}>
+                <h1 className={`text-2xl px-4 py-4`}>
                     <a href="/">
-                        ProShop Ecommerce
+                        <img src="/ts-logo-text.svg" alt="TechStash logo" className={`w-[240px] h-auto`} />
+
                     </a>
                 </h1>
                 <div className="flex items-center justify-between gap-1">
