@@ -8,7 +8,7 @@ interface ProductCardProps {
 
 const ProductCard = ({product}:ProductCardProps) => {
     return (
-        <Link to={`/product/${product._id}`} className="border border-gray-300 p-3 my-3 rounded-md shadow hover:scale-[102%] transition-all">
+        <Link to={`/product/${product._id}`} className="border border-gray-300 p-4 rounded-md shadow hover:scale-[102%] transition-all">
             <div className="relative pb-8 h-full">
                 <img src={product.image} alt={product.name} />
                 <div className="pt-3">
