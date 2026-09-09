@@ -24,7 +24,8 @@ const Header = () => {
             <div className="flex items-center justify-between gap-4 max-w-7xl mx-auto">
                 <h1 className={`text-2xl px-4 py-4`}>
                     <Link to="/">
-                        <img src="/ts-logo-text.svg" alt="TechStash logo" className={`w-[240px] h-auto`} />
+                        <img src="/ts-logo-text.svg" alt="TechStash logo" className={`hidden md:block w-60 h-auto`} />
+                        <img src="/ts-logo.svg" alt="TechStash" className={`md:hidden w-8 h-auto`} />
                     </Link>
                 </h1>
                 <div className="flex items-center justify-between gap-1">
