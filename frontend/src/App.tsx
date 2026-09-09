@@ -8,7 +8,7 @@ function App() {
   return (
     <>
         <Header />
-        <main className={`p-3`}>
+        <main className={`p-6`}>
             <div className="max-w-7xl mx-auto">
                 <Outlet />
             </div>
