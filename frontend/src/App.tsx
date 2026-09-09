@@ -1,7 +1,7 @@
 import './App.css'
+import { Outlet } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import HomeScreen from "./screens/HomeScreen";
 
 function App() {
 
@@ -10,7 +10,7 @@ function App() {
         <Header />
         <main className={`p-3`}>
             <div className="max-w-7xl mx-auto">
-                <HomeScreen />
+                <Outlet />
             </div>
         </main>
         <Footer />
