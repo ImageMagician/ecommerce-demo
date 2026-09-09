@@ -4,12 +4,12 @@ import { faStar as faStarStroke } from "@fortawesome/free-regular-svg-icons";
 
 interface RatingProps {
     value: number;
-    text?: string;
+    text?: number;
 }
 
 const Rating = ( { value, text }: RatingProps ) => {
     return (
-        <div className={`text-yellow-500 text-sm`}>
+        <div className={`text-yellow-400 text-sm`}>
             <span>
                 { value >= 1
                     ? <FontAwesomeIcon icon={faStar} />
