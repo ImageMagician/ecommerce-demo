@@ -13,7 +13,7 @@ const ProductCard = ({product}:ProductCardProps) => {
                 <img src={product.image} alt={product.name} />
                 <div className="pt-3">
                     <h3 className={`font-semibold mb-2`}>{product.name}</h3>
-                    <p><Rating value={product.rating} text={product.numReviews} /></p>
+                    <div><Rating value={product.rating} text={product.numReviews} /></div>
                 </div>
                 <p className={`block absolute bottom-0 left-0 text-xl text-gray-500 font-semibold`}>${product.price}</p>
             </div>
