@@ -10,7 +10,6 @@ const HomeScreen = () => {
         const fetchProducts = async () => {
             try {
                 const { data } = await axios.get('/api/products');
-                console.log("data: ", data);
                 setProducts(data);
             }
             catch (err) {
