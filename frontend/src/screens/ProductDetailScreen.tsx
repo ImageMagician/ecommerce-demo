@@ -1,11 +1,26 @@
 import { useParams } from 'react-router-dom'
-import products from '../../src/products'
 import Rating from "../components/Rating.tsx";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import type { Product } from "../types.ts";
 
 const ProductDetailScreen = () => {
     const { id: productId } = useParams();
-    const product = products.find((p) => p._id === productId);
+    const [product, setProduct] = useState<Product | null>(null);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const { data } = await axios.get(`/api/products/${productId}`);
+                setProduct(data);
+            }
+            catch (err) {
+                console.log('product fetch failed: ', err);
+            }
+        }
+        fetchProducts();
+    }, [])
 
     return (
         <div>
