@@ -1,0 +1,23 @@
+{
+  "name": "ecommerce",
+  "version": "1.0.0",
+  "description": "Ecommerce platform built in React",
+  "homepage": "https://github.com/ImageMagician/ecommerce-demo#readme",
+  "bugs": {
+    "url": "https://github.com/ImageMagician/ecommerce-demo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ImageMagician/ecommerce-demo.git"
+  },
+  "license": "MIT",
+  "author": "Mark Larson",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
