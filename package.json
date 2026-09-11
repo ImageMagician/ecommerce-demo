@@ -21,7 +21,8 @@
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "dependencies": {
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "mongoose": "^9.10.0"
   },
   "devDependencies": {
     "concurrently": "^10.0.5",
