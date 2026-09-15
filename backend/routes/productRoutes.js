@@ -11,6 +11,11 @@ router.get('/', asyncHandler( async( req, res) => {
 
 router.get('/:id', asyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id);
+
+    if (!product) {
+        res.status(404).send('Product not found');
+    }
+
     res.json(product);
 }));
 
