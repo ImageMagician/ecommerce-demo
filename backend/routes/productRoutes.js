@@ -13,10 +13,10 @@ router.get('/:id', asyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id);
 
     if (!product) {
-        res.status(404).send('Product not found');
+        throw new Error('This Product was not found or no longer exists');
     }
-
     res.json(product);
+
 }));
 
 export default router;
