@@ -7,6 +7,8 @@ import {
     Route,
     RouterProvider
 } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import store from './store.js'
 
 import HomeScreen from "./screens/HomeScreen.tsx";
 import ProductDetailScreen from "./screens/ProductDetailScreen.tsx";
