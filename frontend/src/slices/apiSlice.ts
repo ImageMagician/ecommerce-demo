@@ -10,7 +10,7 @@ export const apiSlice = createApi({
         'Order',
         'User'
     ],
-    endPoints: (builder) => ({
-
+    endpoints: (builder) => ({
+        //
     })
 })
