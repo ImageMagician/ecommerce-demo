@@ -29,7 +29,7 @@ const ProductDetailScreen = () => {
             </div>
         { product
             ? <div className="sm:flex sm:gap-8">
-                <div className={`sm:w-1/2`}>
+                <div className={`sm:w-1/2 mb-4 sm:mb-0`}>
                     <img src={product.image} alt={product.name} className={`w-full rounded-md`}/>
                 </div>
                 <div className={`sm:w-1/2`}>
