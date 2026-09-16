@@ -3,6 +3,7 @@ import Rating from "../components/Rating.tsx";
 import { Link } from "react-router-dom";
 import { useGetProductDetailsQuery } from "../slices/productsApiSlice";
 import { skipToken } from '@reduxjs/toolkit/query/react'
+import Loader from "../components/Loader";
 
 interface ApiError {
     message: string;
@@ -21,7 +22,7 @@ const ProductDetailScreen = () => {
             </div>
             {
                 isLoading ? (
-                        <h2>Loading...</h2>
+                        <Loader />
                     )
                     : error ? (
                             <div>{'data' in error
