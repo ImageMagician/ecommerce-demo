@@ -9,7 +9,7 @@ interface ProductCardProps {
 const ProductCard = ({product}:ProductCardProps) => {
     return (
         <Link to={`/product/${product._id}`} className="border border-gray-300 p-4 rounded-md shadow hover:scale-[102%] transition-all">
-            <div className="relative pb-8 h-full">
+            <div className="relative pb-8 h-full z-0">
                 <img src={product.image} alt={product.name} />
                 <div className="pt-3">
                     <h3 className={`font-semibold mb-2`}>{product.name}</h3>

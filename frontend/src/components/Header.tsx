@@ -28,7 +28,7 @@ const Header = () => {
     ];
 
     return (
-        <header className="sticky top-0 bg-white border-b border-gray-200">
+        <header className="sticky top-0 bg-white border-b border-gray-200 z-10">
             <div className="flex items-center justify-between gap-4 max-w-7xl mx-auto">
                 <h1 className={`text-2xl px-4 py-4`}>
                     <Link to="/">
@@ -42,7 +42,7 @@ const Header = () => {
                     >
                         <FontAwesomeIcon icon={faBars} />
                     </button>
-                    <nav className={`fixed top-0 bottom-0 right-0 p-3 bg-blue-900/85 sm:bg-transparent text-white sm:text-gray-500 w-auto transition-all duration-300 sm:static sm:block sm:flex gap-2 items-center ${mobileOpen ? 'left-0' : 'left-full'}`}>
+                    <nav className={`z-50 fixed top-0 bottom-0 right-0 p-3 bg-blue-900/85 sm:bg-transparent text-white sm:text-gray-500 w-auto transition-all duration-300 sm:static sm:block sm:flex gap-2 items-center ${mobileOpen ? 'left-0' : 'left-full'}`}>
                         <div className={`text-end mb-1 block sm:hidden`}>
                             <button className={`block ml-auto border-2 border-white rounded px-1.5`}
                                     onClick={mobileMenuToggle}
