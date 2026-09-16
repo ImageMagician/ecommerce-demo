@@ -1,32 +1,36 @@
-import { useEffect, useState } from "react";
 import type { Product } from "../types.js";
 import ProductCard from "../components/ProductCard";
-import axios from "axios";
+import { useGetProductsQuery } from "../slices/productsApiSlice.ts";
+interface ApiError {
+    message: string;
+}
 
 const HomeScreen = () => {
-    const [products, setProducts] = useState([]);
-
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const { data } = await axios.get('/api/products');
-                setProducts(data);
-            }
-            catch (err) {
-                console.log('products fetch failed: ', err);
-            }
-        }
-        fetchProducts();
-    }, [])
+    const { data: products, isLoading, error } = useGetProductsQuery();
 
     return (
         <>
-            <h1 className={`text-3xl font-semibold mb-3`}>Latest Products</h1>
-            <div className={`grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6`}>
-                {products.map((product:Product) => (
-                    <ProductCard key={product._id} product={product} />
-                ))}
-            </div>
+            {
+                isLoading ? (
+                        <h2>Loading...</h2>
+                    )
+                    : error ? (
+                            <div>{ 'data' in error
+                                ? (error.data as ApiError)?.message
+                                : 'message' in error
+                                    ?  error.message
+                                    : 'An error occurred.'
+                            }</div>
+                        )
+                        : (<>
+                            <h1 className={`text-3xl font-semibold mb-3`}>Latest Products</h1>
+                            <div className={`grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6`}>
+                                {products?.map((product:Product) => (
+                                    <ProductCard key={product._id} product={product} />
+                                ))}
+                            </div>
+                        </>)
+            }
         </>
     )
 };
