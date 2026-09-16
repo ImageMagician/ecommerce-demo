@@ -8,7 +8,7 @@ import {
     RouterProvider
 } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import store from './store.js'
+import store from './store.ts'
 
 import HomeScreen from "./screens/HomeScreen.tsx";
 import ProductDetailScreen from "./screens/ProductDetailScreen.tsx";
@@ -24,6 +24,8 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById('app')!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
   </StrictMode>,
 )
