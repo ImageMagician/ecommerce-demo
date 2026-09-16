@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useGetProductDetailsQuery } from "../slices/productsApiSlice";
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import Loader from "../components/Loader";
+import Message from "../components/Message";
 
 interface ApiError {
     message: string;
@@ -25,12 +26,14 @@ const ProductDetailScreen = () => {
                         <Loader />
                     )
                     : error ? (
-                            <div>{'data' in error
-                                ? (error.data as ApiError)?.message
-                                : 'message' in error
-                                    ? error.message
-                                    : 'An error occurred.'
-                            }</div>
+                            <Message variant="error"
+                                     message={'data' in error
+                                        ? (error.data as ApiError)?.message
+                                        : 'message' in error
+                                            ? error.message
+                                            : 'An error occurred.'
+                                    }
+                            />
                         )
                         : (
                             <>
