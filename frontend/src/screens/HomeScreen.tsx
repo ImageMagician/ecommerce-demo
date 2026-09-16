@@ -2,6 +2,7 @@ import type { Product } from "../types.js";
 import ProductCard from "../components/ProductCard";
 import { useGetProductsQuery } from "../slices/productsApiSlice.ts";
 import Loader from "../components/Loader";
+import Message from "../components/Message";
 
 interface ApiError {
     message: string;
@@ -17,12 +18,14 @@ const HomeScreen = () => {
                         <Loader />
                     )
                     : error ? (
-                            <div>{ 'data' in error
-                                ? (error.data as ApiError)?.message
-                                : 'message' in error
-                                    ?  error.message
-                                    : 'An error occurred.'
-                            }</div>
+                            <Message variant="error"
+                                     message={ 'data' in error
+                                        ? (error.data as ApiError)?.message
+                                        : 'message' in error
+                                            ?  error.message
+                                            : 'An error occurred.'
+                                    }
+                            />
                         )
                         : (<>
                             <h1 className={`text-3xl font-semibold mb-3`}>Latest Products</h1>
