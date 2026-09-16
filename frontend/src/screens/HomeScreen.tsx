@@ -1,6 +1,8 @@
 import type { Product } from "../types.js";
 import ProductCard from "../components/ProductCard";
 import { useGetProductsQuery } from "../slices/productsApiSlice.ts";
+import Loader from "../components/Loader";
+
 interface ApiError {
     message: string;
 }
@@ -12,7 +14,7 @@ const HomeScreen = () => {
         <>
             {
                 isLoading ? (
-                        <h2>Loading...</h2>
+                        <Loader />
                     )
                     : error ? (
                             <div>{ 'data' in error
