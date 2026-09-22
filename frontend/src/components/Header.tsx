@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart, faBars, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import type { RootState } from '../store'
 
 type NavLink = {
     href: string,
@@ -9,6 +11,8 @@ type NavLink = {
 }
 
 const Header = () => {
+    const { cartItems } = useSelector((state: RootState) => state.cart);
+
     const [isOpen, setIsOpen] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -53,7 +57,7 @@ const Header = () => {
                         <div className="relative">
                             <button onClick={toggleMenu} aria-expanded={isOpen} className={`border-b border-b-white/30 w-full sm:w-auto text-start sm:border-none p-2 sm:rounded hover:text-blue-700 cursor-pointer`}>
                                 <FontAwesomeIcon icon={faUserCircle} />
-                                Sign In
+                                <span className="ml-1 hidden sm:inline">Sign In</span>
                             </button>
                             {isOpen && (
                                 <ul className={`sm:absolute sm:top-full sm:left-0 sm:border sm:border-gray-300 sm:bg-white sm:rounded sm:shadow`}>
@@ -65,9 +69,14 @@ const Header = () => {
                                 </ul>
                             )}
                         </div>
-                        <Link to="/cart" className="hover:text-blue-700 p-2 sm:p-0 inline-block">
+                        <Link to="/cart" className="hover:text-blue-700 p-2 sm:p-0 inline-block relative">
                             <FontAwesomeIcon icon={faShoppingCart} />
                             <span className="hidden sm:inline-block ml-1">Cart</span>
+                            { cartItems.length > 0 && (
+                                <span className="bg-white rounded-full px-1 py-0 text-black text-[8px] absolute -top-1 -left-1 border border-gray-500">
+                                    { cartItems.length }
+                                </span>
+                            )}
                         </Link>
                     </nav>
                 </div>
