@@ -4,10 +4,6 @@ import type {Product} from '../types'
 const cartFromStorage = localStorage.getItem('cart');
 const initialState = cartFromStorage ? JSON.parse(cartFromStorage) : { cartItems:[] };
 
-const addDecimals = (num: number) => {
-    return (Math.round(num * 100) / 100).toFixed(2);
-}
-
 const cartSlice = createSlice({
     name: 'cart',
     initialState,
@@ -24,16 +20,19 @@ const cartSlice = createSlice({
             }
 
             // Calculate items price
-            state.itemsPrice = addDecimals(state.cartItems.reduce( ( acc: number, item: { price: number; qty: number; } ) => acc + ( item.price * item.qty ), 0 ));
+            state.itemsPrice = state.cartItems.reduce( ( acc: number, item: { price: number; qty: number; } ) =>
+                acc + ( ( item.price * 100 ) * item.qty ), 0
+            );
 
             // Calculate shipping price (if order is over $100 then free else $10)
-            state.shippingPrice = addDecimals(state.itemsPrice > 100 ? 0 : 10);
+            state.shippingPrice = state.itemsPrice > 10000 ? 0 : 10;
 
             // Calculate tax price
-            state.taxPrice = addDecimals( Number( ( state.itemsPrice * 0.15 ).toFixed(2) ) );
+            // multiply itemPrice by 100 to avoid binary calculation issues.
+            state.taxPrice = Math.round( state.itemsPrice * .15 );
 
             // Calculate total price
-            state.totalPrice = Number( state.itemsPrice + state.shippingPrice + state.taxPrice ).toFixed(2);
+            state.totalPrice = state.itemsPrice + state.shippingPrice + state.taxPrice;
 
             localStorage.setItem('cart', JSON.stringify( state ) );
         }
