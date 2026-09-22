@@ -2,13 +2,15 @@ import React from "react";
 import { useParams, useNavigate } from 'react-router-dom'
 import Rating from "../components/Rating.tsx";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useGetProductDetailsQuery } from "../slices/productsApiSlice";
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { useState, useEffect } from "react";
 import { addToCart } from "../slices/cartSlice";
+import type { Product } from "../types.ts";
+import type { RootState } from "../store";
 
 interface ApiError {
     message: string;
@@ -25,6 +27,9 @@ const ProductDetailScreen = () => {
 
     const { data: product, isLoading, error } = useGetProductDetailsQuery( productId ?? skipToken );
 
+    /**
+     * modify quantity and check against availability
+     */
     function availableQty() {
         return product ? product.countInStock : 0;
     }
@@ -53,6 +58,9 @@ const ProductDetailScreen = () => {
         }
     }
 
+    /**
+     * quantity message alert if selected qty is equal to or greater than availability
+     */
     useEffect(() => {
         const available: number = availableQty();
 
@@ -63,6 +71,17 @@ const ProductDetailScreen = () => {
             setQtyMessage('');
         }
     }, [qty, product]);
+
+    /**
+     * Set item quantity to what is in the cart
+      */
+    const cartItems = useSelector( ( state: RootState ) => state.cart.cartItems);
+
+    useEffect(() => {
+        const existingItem = cartItems.find( ( item: Product ) => item._id === productId);
+
+        setQty( existingItem ? existingItem.qty : 1 );
+    }, [ productId, cartItems ])
 
     const addToCartHandler = () => {
         dispatch(addToCart({
