@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faShoppingCart, faBars, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { Link } from "react-router-dom";
 
 type NavLink = {
@@ -50,10 +50,10 @@ const Header = () => {
                                 &times;
                             </button>
                         </div>
-                        <Link to="/products" className={`w-full sm:w-auto hover:text-blue-600 inline-block p-2 border-b border-b-white/30 sm:border-b-0`}>Products</Link>
                         <div className="relative">
                             <button onClick={toggleMenu} aria-expanded={isOpen} className={`border-b border-b-white/30 w-full sm:w-auto text-start sm:border-none p-2 sm:rounded hover:text-blue-700 cursor-pointer`}>
-                                Account
+                                <FontAwesomeIcon icon={faUserCircle} />
+                                Sign In
                             </button>
                             {isOpen && (
                                 <ul className={`sm:absolute sm:top-full sm:left-0 sm:border sm:border-gray-300 sm:bg-white sm:rounded sm:shadow`}>
@@ -67,7 +67,7 @@ const Header = () => {
                         </div>
                         <Link to="/cart" className="hover:text-blue-700 p-2 sm:p-0 inline-block">
                             <FontAwesomeIcon icon={faShoppingCart} />
-                            <span className="sm:hidden ml-2">Shopping Cart</span>
+                            <span className="hidden sm:inline-block ml-1">Cart</span>
                         </Link>
                     </nav>
                 </div>
