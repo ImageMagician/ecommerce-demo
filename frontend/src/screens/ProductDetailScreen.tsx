@@ -7,6 +7,7 @@ import { useGetProductDetailsQuery } from "../slices/productsApiSlice";
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import QtyPicker from "../components/QtyPicker.tsx";
 import { useState, useEffect } from "react";
 import { addToCart } from "../slices/cartSlice";
 import type { Product } from "../types.ts";
@@ -136,30 +137,7 @@ const ProductDetailScreen = () => {
                                             </div>
                                             <p className={`mb-4`}>{product.description}</p>
                                             <div className="flex gap-4 mb-4">
-                                                <div id="qty" className={`flex gap-1 p-2 rounded-md bg-gray-200 ${product.countInStock === 0 && 'hidden' }`}>
-                                                    <div className="leading-9 text-sm uppercase mr-2 text-gray-600">
-                                                        QTY:
-                                                    </div>
-                                                    <button type="button"
-                                                            className="bg-blue-500 hover:bg-blue-600 text-white uppercase text-sm font-semibold rounded px-2 py-1 disabled:bg-gray-300 cursor-pointer"
-                                                            disabled={ qty === 1 }
-                                                            onClick={subtractQty}
-                                                    >
-                                                        –
-                                                    </button>
-                                                    <input type="text"
-                                                           value={qty}
-                                                           className="border border-gray-200 bg-white px-2 py-1 w-10 text-center rounded"
-                                                           onChange={(e) => changeQty(e)}
-                                                    />
-                                                    <button type="button"
-                                                            className="bg-blue-500 hover:bg-blue-600 text-white uppercase text-sm font-semibold rounded px-2 py-1 disabled:bg-gray-300 cursor-pointer"
-                                                            onClick={addQty}
-                                                            disabled={ qty >= product.countInStock }
-                                                    >
-                                                        +
-                                                    </button>
-                                                </div>
+                                                <QtyPicker product={product} qty={qty} addQty={addQty} subtractQty={subtractQty} changeQty={changeQty} />
                                                 <button type="button"
                                                         className={`block border-0 rounded-md bg-blue-500 hover:bg-blue-600 text-white font-semibold uppercase py-2 px-8 cursor-pointer ${!product.countInStock && 'bg-gray-300'}`}
                                                         disabled={!product.countInStock}
