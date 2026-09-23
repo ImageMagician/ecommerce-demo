@@ -35,7 +35,9 @@ const CartScreen = () => {
     return <div>
         <h1 className="text-2xl font-bold mb-4">Shopping Cart</h1>
         { cartItems.length === 0 ? (
-                <Message message="Your cart is empty." />
+                <Message>
+                    Your cart is empty. <Link to='/' className="underline">Return to products.</Link>
+                </Message>
             ) :
             (
                 <>
@@ -67,7 +69,7 @@ const CartScreen = () => {
                                                    changeQty={ value => updateQuantity( item, clampQty( value, item.countInStock ) ) }
                                         />
                                         <button onClick={ () => removeItem( item._id ) }
-                                                className="p-2 text-xs bg-gray-200 hover:bg-gray-400 rounded-md cursor-pointer"
+                                                className="p-1.5 text-xs bg-gray-200 hover:bg-gray-400 rounded-md cursor-pointer"
                                         >
                                             <FontAwesomeIcon icon={ faTrash } />
                                         </button>
