@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
-import type {Product} from '../types';
-import {updateCart} from "../utils/cartUtils.ts";
+import { createSlice }  from '@reduxjs/toolkit';
+import { updateCart }   from "../utils/cartUtils.ts";
+import type { Product } from '../types';
 
 const cartFromStorage = localStorage.getItem('cart');
 const initialState = cartFromStorage ? JSON.parse(cartFromStorage) : { cartItems:[] };
