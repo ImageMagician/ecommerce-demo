@@ -11,3 +11,21 @@ export type Product = {
     numReviews: number,
     product?: Product
 }
+
+export type cartItem = {
+    _id: string,
+    name: string,
+    image: string,
+    brand: string,
+    category: string,
+    description: string,
+    rating: number,
+    numReviews: number,
+    price: number,
+    countInStock: number,
+    reviews: string,
+    __v: number,
+    createdAt: string,
+    updatedAt: string,
+    qty: number,
+}
