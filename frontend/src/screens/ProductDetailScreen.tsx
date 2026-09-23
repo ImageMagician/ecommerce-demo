@@ -1,16 +1,17 @@
-import React from "react";
-import { useParams, useNavigate } from 'react-router-dom'
-import Rating from "../components/Rating.tsx";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { useGetProductDetailsQuery } from "../slices/productsApiSlice";
-import { skipToken } from '@reduxjs/toolkit/query/react'
-import Loader from "../components/Loader";
-import Message from "../components/Message";
+import React, { useState, useEffect }         from "react";
+import { useParams, useNavigate, Link }       from 'react-router-dom'
+import { useDispatch, useSelector }           from "react-redux";
+import { skipToken }                          from '@reduxjs/toolkit/query/react'
+import { useGetProductDetailsQuery }          from "../slices/productsApiSlice";
+import { addToCart }                          from "../slices/cartSlice";
+import { increaseQty, decreaseQty, clampQty } from "../utils/quantity.ts";
+
+import Rating    from "../components/Rating.tsx";
+import Loader    from "../components/Loader";
+import Message   from "../components/Message";
 import QtyPicker from "../components/QtyPicker.tsx";
-import { useState, useEffect } from "react";
-import { addToCart } from "../slices/cartSlice";
-import type { Product } from "../types.ts";
+
+import type { Product }   from "../types.ts";
 import type { RootState } from "../store";
 
 interface ApiError {
@@ -35,27 +36,14 @@ const ProductDetailScreen = () => {
         return product ? product.countInStock : 0;
     }
 
-    function addQty () {
-        const available:number = availableQty();
-
-        if ( qty < available ) {
-            setQty( qty + 1 );
-        }
-    }
-    function subtractQty () {
-        setQty( qty > 1 ? qty - 1 : 1 );
-    }
-
     function changeQty ( e: React.ChangeEvent<HTMLInputElement> ) {
         const available:number = availableQty();
-        const value = parseInt( e.currentTarget.value );
+        const requested = parseInt( e.currentTarget.value );
 
-        if ( value <= available ) {
-            setQty( isNaN(value) ? 1 : value );
+        setQty( clampQty( requested, available ) );
+
+        if ( requested <= available ) {
             setQtyMessage('');
-        }
-        else {
-            setQty( available );
         }
     }
 
@@ -137,11 +125,16 @@ const ProductDetailScreen = () => {
                                             </div>
                                             <p className={`mb-4`}>{product.description}</p>
                                             <div className="flex gap-4 mb-4">
-                                                <QtyPicker product={product} qty={qty} addQty={addQty} subtractQty={subtractQty} changeQty={changeQty} />
+                                                <QtyPicker product={product}
+                                                           qty={qty}
+                                                           addQty={      () => setQty( q => increaseQty( q, product.countInStock ) ) }
+                                                           subtractQty={ () => setQty( q => decreaseQty( q  ) ) }
+                                                           changeQty={ changeQty }
+                                                />
                                                 <button type="button"
-                                                        className={`block border-0 rounded-md bg-blue-500 hover:bg-blue-600 text-white font-semibold uppercase py-2 px-8 cursor-pointer ${!product.countInStock && 'bg-gray-300'}`}
-                                                        disabled={!product.countInStock}
-                                                        onClick={addToCartHandler}
+                                                        className={ `block border-0 rounded-md bg-blue-500 hover:bg-blue-600 text-white font-semibold uppercase py-2 px-8 cursor-pointer ${!product.countInStock && 'bg-gray-300' }`}
+                                                        disabled={ !product.countInStock }
+                                                        onClick={ addToCartHandler }
                                                 >
                                                     {product.countInStock > 0 ? 'Add to Cart' : 'Out of Stock'}
                                                 </button>
