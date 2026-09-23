@@ -12,7 +12,7 @@ export type Product = {
     product?: Product
 }
 
-export type cartItem = {
+export type CartItem = {
     _id: string,
     name: string,
     image: string,
