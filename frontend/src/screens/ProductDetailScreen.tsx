@@ -1,4 +1,4 @@
-import React, { useState, useEffect }         from "react";
+import { useState, useEffect }                from "react";
 import { useParams, useNavigate, Link }       from 'react-router-dom'
 import { useDispatch, useSelector }           from "react-redux";
 import { skipToken }                          from '@reduxjs/toolkit/query/react'
@@ -36,21 +36,18 @@ const ProductDetailScreen = () => {
         return product ? product.countInStock : 0;
     }
 
-    function changeQty ( e: React.ChangeEvent<HTMLInputElement> ) {
+    function changeQty ( requested: number ) {
         const available:number = availableQty();
-        const requested = parseInt( e.currentTarget.value );
 
         setQty( clampQty( requested, available ) );
 
-        if ( requested <= available ) {
-            setQtyMessage('');
-        }
+        if ( requested <= available ) setQtyMessage('');
     }
 
     /**
      * quantity message alert if selected qty is equal to or greater than availability
      */
-    useEffect(() => {
+    useEffect( () => {
         const available: number = availableQty();
 
         if ( qty >= available && available > 0 ) {
@@ -66,17 +63,17 @@ const ProductDetailScreen = () => {
       */
     const cartItems = useSelector( ( state: RootState ) => state.cart.cartItems);
 
-    useEffect(() => {
+    useEffect( () => {
         const existingItem = cartItems.find( ( item: Product ) => item._id === productId);
 
         setQty( existingItem ? existingItem.qty : 1 );
     }, [ productId, cartItems ])
 
     const addToCartHandler = () => {
-        dispatch(addToCart({
+        dispatch( addToCart( {
             ...product,
             qty
-        }));
+        } ) );
         navigate( "/cart" );
     }
 
@@ -126,8 +123,8 @@ const ProductDetailScreen = () => {
                                             <p className={`mb-4`}>{product.description}</p>
                                             <div className="flex gap-4 mb-4">
                                                 <QtyPicker product={product}
-                                                           qty={qty}
-                                                           addQty={      () => setQty( q => increaseQty( q, product.countInStock ) ) }
+                                                           qty={ qty }
+                                                           addQty={ () => setQty( q => increaseQty( q, product.countInStock ) ) }
                                                            subtractQty={ () => setQty( q => decreaseQty( q  ) ) }
                                                            changeQty={ changeQty }
                                                 />
