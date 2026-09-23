@@ -24,7 +24,7 @@ const QtyPicker = ( { product, qty, addQty, subtractQty, changeQty  }: QtyProps 
                 <input type="text"
                        value={qty}
                        className="border border-gray-200 bg-white px-2 py-1 w-10 text-center rounded"
-                       onChange={(e) => changeQty(e)}
+                       onChange={ e => changeQty( parseInt( e.currentTarget.value, 10 ) ) }
                 />
                 <button type="button"
                         className="bg-blue-500 hover:bg-blue-600 text-white uppercase text-sm font-semibold rounded px-2 py-1 disabled:bg-gray-300 cursor-pointer"
