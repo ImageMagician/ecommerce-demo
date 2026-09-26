@@ -8,7 +8,7 @@ function App() {
   return (
     <>
         <Header />
-        <main className={`p-6`}>
+        <main className={`py-6 sm:py-16 px-6`}>
             <div className="max-w-7xl mx-auto">
                 <Outlet />
             </div>
