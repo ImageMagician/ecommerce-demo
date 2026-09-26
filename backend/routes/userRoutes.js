@@ -20,7 +20,7 @@ router.post('/logout', logoutUser);
 router.post('/register', registerUser);
 router.route('/profile')
     .get(getUserProfile)
-    .post(updateUserProfile);
+    .put(updateUserProfile);
 
 // Admin routes
 router.get('/', getAllUsers);
