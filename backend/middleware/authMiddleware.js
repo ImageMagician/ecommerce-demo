@@ -15,7 +15,7 @@ const protect = asyncHandler( async( req, res, next ) => {
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = await User.findById(decoded.userId).select('-password');
         next();
     }
@@ -26,7 +26,7 @@ const protect = asyncHandler( async( req, res, next ) => {
     }
 });
 
-const adminProtect = ( req, res, next ) => {
+const isAdmin = ( req, res, next ) => {
     if ( ! req.user || ! req.user.isAdmin ) {
         res.status(401);
         throw new Error ('Not authorized: adminProtected');
@@ -34,4 +34,4 @@ const adminProtect = ( req, res, next ) => {
     next();
 }
 
-export { protect, adminProtect };
+export { protect, isAdmin };
