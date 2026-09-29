@@ -1,38 +1,25 @@
 import asyncHandler from "../middleware/asyncHandler.js";
 import User from '../models/userModel.js';
-import jwt from "jsonwebtoken";
+import generateToken from "../utils/generateToken.js";
 
 /**
  * @desc    Auth user & get token
  * @route   POST /api/users/login
  * @access  Public
  */
-const authUser = asyncHandler(async (req, res) => {
+const authUser = asyncHandler(async ( req, res ) => {
     const { email, password } = req.body;
 
-    const user = await User.findOne( { email: email } );
+    const user = await User.findOne( { email } );
 
     if ( user && ( await user.matchPassword( password ) ) ) {
-        const token = jwt.sign(
-            { userId: user._id },
-            process.env.JWT_SECRET, {
-                expiresIn: process.env.JWT_EXPIRES
-            }
-        );
-
-        // set JWT as HTTP-Only cookie
-        res.cookie('jwt', token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV !== 'development',
-            sameSite: 'strict',
-            maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
-        });
+        await generateToken(res, user._id);
 
         res.json({
             _id:     user._id,
             name:    user.name,
             email:   user.email,
-            isAdmin: user.isAdmin
+            isAdmin: user.isAdmin,
         });
     }
     else {
@@ -46,8 +33,37 @@ const authUser = asyncHandler(async (req, res) => {
  * @route   POST /api/users/register
  * @access  Public
  */
-const registerUser = asyncHandler(async (req, res) => {
-    res.send('Register user');
+const registerUser = asyncHandler(async ( req, res ) => {
+    console.log( req.body );
+    const { name, email, password } = req.body;
+
+    const userExists = await User.findOne({ email } );
+
+    if ( userExists ) {
+        res.status( 400 );
+        throw new Error( 'The email already exists in the system.' )
+    }
+
+    const user = await User.create({
+        name,
+        email,
+        password
+    });
+
+    if ( ! user ) {
+        res.status( 400 );
+        throw new Error( 'Invalid Credentials.' );
+    }
+
+    await generateToken( res, user._id );
+
+    res.status(201).json({
+        _id:      user._id,
+        name:     user.name,
+        email:    user.email,
+        password: user.password,
+        isAdmin:  user.isAdmin,
+    });
 });
 
 /**
