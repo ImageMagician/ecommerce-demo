@@ -1,19 +1,22 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
+import { Provider }   from 'react-redux'
 import {
     createBrowserRouter,
     createRoutesFromElements,
     Route,
     RouterProvider
 } from 'react-router-dom'
-import { Provider } from 'react-redux'
+
+import App from './App.tsx'
+
 import store from './store.ts'
 
-import HomeScreen from "./screens/HomeScreen.tsx";
+// SCREENS
+import HomeScreen          from "./screens/HomeScreen.tsx";
 import ProductDetailScreen from "./screens/ProductDetailScreen.tsx";
-import CartScreen from "./screens/CartScreen.tsx";
-import LoginScreen from "./screens/LoginScreen.tsx";
+import CartScreen          from "./screens/CartScreen.tsx";
+import LoginScreen         from "./screens/LoginScreen.tsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
