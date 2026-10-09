@@ -28,8 +28,8 @@ router.route('/profile')
 router.get('/', protect, isAdmin, getAllUsers);
 
 router.route( '/:id' )
-    .get( protect,    isAdmin, getUserById )
-    .put( protect,    isAdmin, updateUserById )
+    .get(    protect, isAdmin, getUserById )
+    .put(    protect, isAdmin, updateUserById )
     .delete( protect, isAdmin, deleteUser );
 
 export default router;
