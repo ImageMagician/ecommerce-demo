@@ -14,35 +14,38 @@ const LoginScreen = () => {
     return (
         <FormContainer>
             <form onSubmit={ submitHandler }>
-                <h1 className="mb-3 text-lg font-bold">Sign In</h1>
-                <div className="mb-3">
-                    <label htmlFor="email" className="font-sm uppercase text-gray-500 mb-2">
+                <h1 className="mb-4 text-3xl font-bold">Sign In</h1>
+                <div className="mb-4">
+                    <label htmlFor="email" className="label">
                         Email
                     </label>
                     <input type="email"
                            name="email"
                            id="email"
-                           placeholder="Email"
+                           placeholder="Enter email address"
                            value={ email }
                            onChange={ ( e ) => setEmail(e.target.value) }
+                           className="input-text"
                     />
                 </div>
-                <div className="mb-3">
-                    <label htmlFor="password" className="font-sm uppercase text-gray-500 mb-2">
+                <div className="mb-4">
+                    <label htmlFor="password" className="label">
                         Password
                     </label>
                     <input type="password"
                            name="password"
                            id="password"
                            value={ password }
+                           placeholder="Enter password"
                            onChange={ ( e ) => setPassword(e.target.value) }
+                           className="input-text"
                     />
                 </div>
                 <div className="mb-3">
-                    <button type="submit" className="py-1 px-4 bg-black text-white font-bold text-sm uppercase">SUBMIT</button>
+                    <button type="submit" className="primary-button">SUBMIT</button>
                 </div>
                 <p>
-                    <Link to="/register">New customer?</Link>
+                    <Link to="/register" className="hover:underline text-blue-500 hover:text-blue-600">New customer?</Link>
                 </p>
             </form>
         </FormContainer>
