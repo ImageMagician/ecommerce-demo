@@ -1,8 +1,12 @@
-import { useState } from 'react';
+import { useState }    from 'react';
+import { Link }        from "react-router-dom";
+import { useSelector } from "react-redux";
+
+// Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart, faBars, faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+
+// Types
 import type { RootState } from '../store'
 
 type NavLink = {
@@ -11,24 +15,24 @@ type NavLink = {
 }
 
 const Header = () => {
-    const { cartItems } = useSelector((state: RootState) => state.cart);
+    const { cartItems } = useSelector( ( state: RootState ) => state.cart );
 
-    const [isOpen, setIsOpen] = useState(false);
-    const [mobileOpen, setMobileOpen] = useState(false);
+    const [ isOpen, setIsOpen ]         = useState( false );
+    const [ mobileOpen, setMobileOpen ] = useState( false );
 
-    const toggleMenu = () => setIsOpen(!isOpen);
+    const toggleMenu = () => setIsOpen( !isOpen );
 
     const mobileMenuToggle = () => {
-        if (mobileOpen) {
-            setIsOpen(true);
+        if ( mobileOpen ) {
+            setIsOpen( true );
         }
-        setMobileOpen(!mobileOpen);
+        setMobileOpen( !mobileOpen );
     }
 
     const links: NavLink[] = [
         { href: "/account", label: "Account" },
-        { href: "/orders", label: "Orders" },
-        { href: "/logout", label: "Logout" },
+        { href: "/orders",  label: "Orders" },
+        { href: "/logout",  label: "Logout" },
     ];
 
     return (
