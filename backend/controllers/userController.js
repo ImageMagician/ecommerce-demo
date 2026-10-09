@@ -24,7 +24,7 @@ const authUser = asyncHandler(async ( req, res ) => {
     }
     else {
         res.status(401);
-        throw new Error('Invalid Credentials');
+        throw new Error('Invalid username or password.');
     }
 });
 
