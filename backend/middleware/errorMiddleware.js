@@ -4,7 +4,8 @@ const notFound = (req, res, next) => {
     next(error);
 }
 
-const errorHandler = (err, req, res) => {
+// ts-ignore: must keep all 4 params. 'next' is load bearing although unused
+const errorHandler = (err, req, res, next) => {
     let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
     let message = err.message;
 
