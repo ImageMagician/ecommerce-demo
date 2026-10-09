@@ -1,1 +1,13 @@
 @import 'tailwindcss';
+
+label.label {
+    @apply text-sm uppercase text-gray-700 mb-1 block tracking-widest;
+}
+
+input.input-text {
+    @apply block border rounded w-full border-gray-300 p-2 placeholder-gray-400;
+}
+
+.primary-button {
+    @apply py-2 px-6 bg-black text-white font-bold text-sm uppercase rounded cursor-pointer focus:outline-none;
+}
