@@ -1,15 +1,52 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+// STANDARD
+import { useState, useEffect }            from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector }       from 'react-redux';
+import { toast }                          from "react-toastify";
+
+// COMPONENTS
 import FormContainer from '../components/FormContainer';
 
-const LoginScreen = () => {
-    const [ email, setEmail ] = useState('');
-    const [ password, setPassword ] = useState('');
+// SLICES
+import { useLoginMutation } from "../slices/usersApiSlice.ts";
+import { setCredentials }   from "../slices/authSlice.ts";
 
-    const submitHandler = (e: { preventDefault: () => void; }) => {
+// TYPES
+import type { RootState } from "../store.ts";
+
+const LoginScreen = () => {
+    const [ email, setEmail ]       = useState( '' );
+    const [ password, setPassword ] = useState( '' );
+
+    const dispatch = useDispatch();
+    const navigate        = useNavigate();
+
+    const [ login, { isLoading } ] = useLoginMutation();
+
+    const { userInfo } = useSelector( ( state: RootState ) => state.auth );
+    const { search }   = useLocation();
+
+    const sp              = new URLSearchParams( search );
+    const redirect = sp.get('redirect') || '/';
+
+    const submitHandler = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        console.log('submit');
+
+        try {
+            const res = await login( { email, password } ).unwrap();
+            dispatch( setCredentials( { ...res, } ) );
+            navigate( redirect );
+        }
+        catch ( err: any ) {
+            toast.error( err?.data?.message || err.error || 'Login failed.' );
+        }
     }
+
+    useEffect( () => {
+        if ( userInfo ) {
+            navigate( redirect )
+        }
+    }, [ userInfo, redirect, navigate ] );
 
     return (
         <FormContainer>
@@ -42,10 +79,15 @@ const LoginScreen = () => {
                     />
                 </div>
                 <div className="mb-3">
-                    <button type="submit" className="primary-button">SUBMIT</button>
+                    <button type="submit"
+                            disabled={ isLoading }
+                            className="primary-button w-24"
+                    >
+                        { isLoading ? `...` : 'Login' }
+                    </button>
                 </div>
                 <p>
-                    <Link to="/register" className="hover:underline text-blue-500 hover:text-blue-600">New customer?</Link>
+                    <Link to={ redirect ? `/register?redirect=${ redirect }` : '/register' } className="hover:underline text-blue-500 hover:text-blue-600">New customer?</Link>
                 </p>
             </form>
         </FormContainer>
