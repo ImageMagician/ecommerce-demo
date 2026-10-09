@@ -87,7 +87,7 @@ const LoginScreen = () => {
                     </button>
                 </div>
                 <p>
-                    <Link to={ redirect ? `/register?redirect=${ redirect }` : '/register' } className="hover:underline text-blue-500 hover:text-blue-600">New customer?</Link>
+                    New customer? <Link to={ redirect ? `/register?redirect=${ redirect }` : '/register' } className="hover:underline text-blue-500 hover:text-blue-600">Sign up here</Link>.
                 </p>
             </form>
         </FormContainer>
