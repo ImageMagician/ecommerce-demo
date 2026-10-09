@@ -1,9 +1,13 @@
-import { useState }    from 'react';
-import { Link }        from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useState }                 from 'react';
+import { Link, useNavigate }        from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+
+// Slices
+import { logout }            from '../slices/authSlice.ts';
+import { useLogoutMutation } from "../slices/usersApiSlice.ts";
 
 // Icons
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon }                      from "@fortawesome/react-fontawesome";
 import { faShoppingCart, faBars, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 
 // Types
@@ -18,6 +22,9 @@ const Header = () => {
     const { cartItems } = useSelector( ( state: RootState ) => state.cart );
     const { userInfo }  = useSelector( ( state: RootState ) => state.auth );
 
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const [ isOpen, setIsOpen ]         = useState( false );
     const [ mobileOpen, setMobileOpen ] = useState( false );
 
@@ -30,8 +37,17 @@ const Header = () => {
         setMobileOpen( !mobileOpen );
     }
 
-    const logoutHandler = () => {
-        console.log('logout');
+    const [ logoutApiCall ] = useLogoutMutation();
+
+    const logoutHandler = async () => {
+        try {
+            await logoutApiCall().unwrap();
+            dispatch( logout() );
+            navigate("/login");
+        }
+        catch( err ) {
+            console.log( err );
+        }
     }
 
     const links: NavLink[] = [
