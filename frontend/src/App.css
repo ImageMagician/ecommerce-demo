@@ -12,3 +12,15 @@ input.input-text {
 .primary-button {
     @apply py-2 px-6 bg-black text-white font-bold text-sm uppercase rounded cursor-pointer focus:outline-none;
 }
+
+.disabled-button {
+    @apply py-1 px-6 bg-transparent text-gray-400 border border-gray-300 rounded-md;
+}
+
+.bold-link {
+    @apply font-bold hover:text-blue-500;
+}
+
+.disabled-link {
+    @apply text-gray-500 cursor-default;
+}
