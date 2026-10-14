@@ -4,6 +4,8 @@ import { useNavigate }              from "react-router-dom";
 import type { RootState }           from '../store.ts';
 
 import FormContainer                from "../components/FormContainer";
+import CheckoutSteps                from "../components/CheckoutSteps.tsx";
+
 import { saveShippingAddress }      from "../slices/cartSlice.ts";
 
 const ShippingScreen = () => {
@@ -26,6 +28,7 @@ const ShippingScreen = () => {
     }
 
     return <FormContainer>
+        <CheckoutSteps step1 step2 />
         <h1 className="text-3xl font-bold mb-4">Shipping Address</h1>
         <form onSubmit={ submitHandler }>
             <div className="my-3">
