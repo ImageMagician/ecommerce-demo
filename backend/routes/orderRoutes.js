@@ -20,3 +20,5 @@ router.route( '/:id/pay').get( protect, updateOrderToPaid );
 // Admin
 router.route( '/:id/deliver').get( protect, isAdmin, updateOrderToDelivered );
 router.route( '/' )          .get( protect, isAdmin, getAllOrders );
+
+export default router;
