@@ -1,5 +1,5 @@
-import asyncHandler from "../middleware/asyncHandler";
-import Order        from "../models/orderModel";
+import asyncHandler from "../middleware/asyncHandler.js";
+import Order        from "../models/orderModel.js";
 
 /**
  * @desc    Create new order
