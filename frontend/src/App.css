@@ -24,3 +24,11 @@ input.input-text {
 .disabled-link {
     @apply text-gray-500 cursor-default;
 }
+
+.order-list > .order-list-item {
+    @apply border-b border-gray-200 py-4;
+}
+
+.order-list > .order-list-item:last-child {
+    @apply border-b-0;
+}
