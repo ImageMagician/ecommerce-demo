@@ -13,7 +13,6 @@ interface CreateOrderArgs {
     shippingPrice:   number;
     taxPrice:        number;
     totalPrice:      number;
-    userId:          string;
 }
 
 export const ordersApiSlice = apiSlice.injectEndpoints({
