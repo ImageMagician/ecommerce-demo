@@ -3,6 +3,17 @@ import { ORDERS_URL } from "../constants.ts";
 
 interface Order {
     _id: string;
+    user: string;
+    orderItems: Order[];
+    shippingAddress: object;
+    paymentMethod: string;
+    itemsPrice: number;
+    shippingPrice: number;
+    totalPrice: number;
+    isPaid: boolean;
+    isDelivered: boolean;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 interface CreateOrderArgs {
@@ -24,11 +35,11 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
                 body: { ...order },
             })
         }),
-        getOrderDetails: builder.query({
+        getOrderDetails: builder.query<Order, string>({
             query: ( orderId ) => ({
                 url: `${ ORDERS_URL }/${ orderId }`
             }),
-            keepUnusedDataFor: 5,
+            keepUnusedDataFor: 10,
         }),
     })
 });
