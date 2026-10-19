@@ -1,19 +1,42 @@
 import { apiSlice }   from "./apiSlice.ts";
 import { ORDERS_URL } from "../constants.ts";
 
-interface Order {
+export interface OrderItem {
+    _id:          string;
+    name:         string;
+    image:        string;
+    brand:        string;
+    category:     string;
+    description:  string;
+    rating:       number;
+    numReviews:   number;
+    price:        number;
+    countInStock: number;
+
+}
+
+export interface Order {
     _id: string;
-    user: string;
-    orderItems: Order[];
-    shippingAddress: object;
-    paymentMethod: string;
-    itemsPrice: number;
-    shippingPrice: number;
-    totalPrice: number;
-    isPaid: boolean;
-    isDelivered: boolean;
-    createdAt: Date;
-    updatedAt: Date;
+    user: {
+        _id:   string;
+        email: string;
+        name:  string
+    };
+    orderItems:     OrderItem[];
+    shippingAddress: {
+        address:    string;
+        city:       string;
+        province:   string;
+        postalCode: string;
+    };
+    paymentMethod:  string;
+    itemsPrice:     number;
+    shippingPrice:  number;
+    totalPrice:     number;
+    isPaid:         boolean;
+    isDelivered:    boolean;
+    createdAt:      Date;
+    updatedAt:      Date;
 }
 
 interface CreateOrderArgs {
