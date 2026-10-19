@@ -2,7 +2,7 @@ import { apiSlice }   from "./apiSlice.ts";
 import { ORDERS_URL } from "../constants.ts";
 
 export interface OrderItem {
-    _id:          string;
+    product:      string;
     name:         string;
     image:        string;
     brand:        string;
@@ -12,7 +12,7 @@ export interface OrderItem {
     numReviews:   number;
     price:        number;
     countInStock: number;
-
+    qty:          number;
 }
 
 export interface Order {
@@ -32,6 +32,7 @@ export interface Order {
     paymentMethod:  string;
     itemsPrice:     number;
     shippingPrice:  number;
+    taxPrice:       number;
     totalPrice:     number;
     isPaid:         boolean;
     isDelivered:    boolean;
