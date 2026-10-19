@@ -40,4 +40,8 @@ app.use( '/api/orders',   orderRoutes );
 app.use( notFound );
 app.use( errorHandler );
 
+app.get( '/api/config/paypal', ( req, res ) =>
+    res.send({ clientId: process.env.PAYPAL_CLIENT_ID } )
+);
+
 app.listen( port, () => console.log(`Listening on port ${port}`) );
