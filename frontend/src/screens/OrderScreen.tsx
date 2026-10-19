@@ -15,6 +15,10 @@ const OrderScreen = () => {
 
     return <>
         <h1>Order screen</h1>
+        { isLoading ? ( <p>Loading...</p> )
+            : isError ? ( <Message variant="error">There was an error</Message> )
+                : ( 'order info' )
+        }
     </>
 }
 
