@@ -38,6 +38,8 @@ export interface Order {
     isDelivered:    boolean;
     createdAt:      Date;
     updatedAt:      Date;
+    paidAt:         Date;
+    deliveredAt:    Date;
 }
 
 interface CreateOrderArgs {
