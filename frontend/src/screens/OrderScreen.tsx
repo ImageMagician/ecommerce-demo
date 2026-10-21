@@ -8,26 +8,30 @@ import { toast }            from "react-toastify";
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 
 // COMPONENTS
-import Message from "../components/Message";
-import Loader  from "../components/Loader";
+import Message      from "../components/Message";
+import Loader       from "../components/Loader";
+import ErrorMessage from "../components/ErrorMessage.tsx";
 
 // SLICES
 import { useGetOrderDetailsQuery, usePayOrderMutation, useGetPayPalClientIdQuery } from "../slices/ordersApiSlice.ts";
 
+// Types
+import type { CreateOrderActions, OnApproveActions } from "@paypal/paypal-js";
+
 const OrderScreen = () => {
     const { orderId } = useParams();
 
-    const { data: order, isLoading, isError } = useGetOrderDetailsQuery( orderId ?? skipToken ); // add refetch when ready
+    const { data: order, isLoading, isError, refetch } = useGetOrderDetailsQuery( orderId ?? skipToken );
 
     const [ payOrder, { isLoading: loadingPay } ] = usePayOrderMutation();
-    const [ { isPending }, paypalDispatch ] = usePayPalScriptReducer();
+    const [ { isPending }, paypalDispatch ]       = usePayPalScriptReducer();
 
     const { data: paypal, isLoading: loadingPayPal, error: errorPayPal } = useGetPayPalClientIdQuery();
 
     const { userInfo } = useSelector( ( state ) => state.auth);
 
     useEffect(() => {
-        if ( ! errorPayPal && ! loadingPayPal && paypal.clientId ) {
+        if ( !errorPayPal && !loadingPayPal && paypal.clientId ) {
             const loadPayPalScript = async () => {
                 paypalDispatch({
                   type: 'resetOptions',
@@ -46,8 +50,46 @@ const OrderScreen = () => {
         }
     }, [ order, paypal ] );
 
-    const onApproveTest = async () => {
-        console.log('onApproveTest');
+    // FUNCTIONS
+    async function onApproveTest(){
+        await payOrder({ orderId: orderId!, details: { payer: {} } } );
+        refetch();
+        toast.success( 'Payment successful.' );
+    }
+
+    async function onApprove( _data: unknown, actions: OnApproveActions ): Promise<void> {
+        return actions.order?.capture()
+            .then( async function (details ) {
+                try {
+                    await payOrder({ orderId: orderId!, details: { ...details } } );
+                    refetch();
+                    toast.success( 'Payment successful.' );
+                }
+                catch ( err ) {
+                    console.error( err );
+                    const msg = ErrorMessage( err );
+                    toast.error( msg );
+                }
+            });
+    }
+
+    async function onError( err: unknown ) {
+        const msg = ErrorMessage( err );
+        toast.error( msg );
+    }
+
+    async function createOrder( _data: unknown, actions: CreateOrderActions ) {
+        return actions.order.create({
+            purchase_units: [
+                {
+                    amount: {
+                        value: order.totalPrice,
+                    }
+                }
+            ]
+        }).then( ( orderId: String ) => {
+            return orderId;
+        });
     }
 
     if ( isLoading ) return <Loader />;
@@ -131,12 +173,21 @@ const OrderScreen = () => {
 
                             { isPending ? <Loader />
                                 : (
-                                    <button type="button"
-                                            className="rounded py-2 px-4 text-sm font-bold uppercase text-white o bg-blue-500 w-full cursor-pointer"
-                                            onClick={ onApproveTest }
-                                    >
-                                        Pay Order (Test)
-                                    </button>
+                                    <>
+                                        <button type="button"
+                                                className="rounded py-2 px-4 mb-3 text-sm font-bold uppercase text-white o bg-blue-500 w-full cursor-pointer"
+                                                onClick={ onApproveTest }
+                                        >
+                                            Pay Order (Test)
+                                        </button>
+                                        <div>
+                                            <PayPalButtons
+                                                createOrder={ createOrder }
+                                                onApprove={ onApprove }
+                                                onError={ onError }
+                                            />
+                                        </div>
+                                    </>
                                 )
                             }
                         </div>
