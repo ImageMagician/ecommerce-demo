@@ -4,6 +4,7 @@ import { Link, useParams }  from 'react-router-dom';
 import { skipToken }        from "@reduxjs/toolkit/query";
 import { useSelector }      from 'react-redux';
 import { toast }            from "react-toastify";
+import { format }           from "date-fns";
 
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 
@@ -174,12 +175,12 @@ const OrderScreen = () => {
                             { isPending ? <Loader />
                                 : (
                                     <>
-                                        <button type="button"
-                                                className="rounded py-2 px-4 mb-3 text-sm font-bold uppercase text-white o bg-blue-500 w-full cursor-pointer"
-                                                onClick={ onApproveTest }
-                                        >
-                                            Pay Order (Test)
-                                        </button>
+                                        {/*<button type="button"*/}
+                                        {/*        className="rounded py-2 px-4 mb-3 text-sm font-bold uppercase text-white o bg-blue-500 w-full cursor-pointer"*/}
+                                        {/*        onClick={ onApproveTest }*/}
+                                        {/*>*/}
+                                        {/*    Pay Order (Test)*/}
+                                        {/*</button>*/}
                                         <div>
                                             <PayPalButtons
                                                 createOrder={ createOrder }
@@ -199,7 +200,7 @@ const OrderScreen = () => {
                                 <div className="col-span-1 font-semibold">Payment:</div>
                                 <div className="col-span-1 text-end">
                                         <span className="rounded py-1 px-2 text-xs text-white bg-green-500">
-                                            Paid
+                                            { format( order.paidAt, 'MMM d, yyyy' ) }
                                         </span>
                                 </div>
                             </div>
