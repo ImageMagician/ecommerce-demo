@@ -7,6 +7,7 @@ import {
     Route,
     RouterProvider
 } from 'react-router-dom'
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 import App from './App.tsx'
 
@@ -47,7 +48,9 @@ const router = createBrowserRouter(
 createRoot(document.getElementById('app')!).render(
   <StrictMode>
       <Provider store={store}>
-        <RouterProvider router={router} />
+        <PayPalScriptProvider deferLoading={true} options={ { clientId: 'test' } }>
+            <RouterProvider router={router} />
+        </PayPalScriptProvider>
       </Provider>
   </StrictMode>,
 )
