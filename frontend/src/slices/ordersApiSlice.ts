@@ -1,5 +1,5 @@
 import { apiSlice }   from "./apiSlice.ts";
-import { ORDERS_URL } from "../constants.ts";
+import { ORDERS_URL, PAYPAL_URL } from "../constants.ts";
 
 export interface OrderItem {
     product:      string;
@@ -50,6 +50,11 @@ interface CreateOrderArgs {
     totalPrice:      number;
 }
 
+interface PayOrderArgs {
+    orderId: string;
+    details: Record<string, unknown>;
+}
+
 export const ordersApiSlice = apiSlice.injectEndpoints({
     endpoints: ( builder ) => ({
         createOrder: builder.mutation<Order, CreateOrderArgs>({
@@ -65,7 +70,25 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
             }),
             keepUnusedDataFor: 10,
         }),
+        payOrder: builder.mutation<Order, PayOrderArgs>({
+            query: ( { orderId, details } ) => ({
+                url: `${ ORDERS_URL }/${ orderId }/pay`,
+                method: "PUT",
+                body: { ...details }
+            })
+        }),
+        getPayPalClientId: builder.query({
+            query: () => ({
+                url: PAYPAL_URL,
+            }),
+            keepUnusedDataFor: 10,
+        })
     })
 });
 
-export const { useCreateOrderMutation, useGetOrderDetailsQuery } = ordersApiSlice;
+export const {
+    useCreateOrderMutation,
+    useGetOrderDetailsQuery,
+    usePayOrderMutation,
+    useGetPayPalClientIdQuery
+} = ordersApiSlice;
