@@ -1,35 +1,71 @@
 // GENERAL
-import { Link, useParams } from 'react-router-dom';
-import { skipToken }       from "@reduxjs/toolkit/query";
+import { useEffect }        from "react";
+import { Link, useParams }  from 'react-router-dom';
+import { skipToken }        from "@reduxjs/toolkit/query";
+import { useSelector }      from 'react-redux';
+import { toast }            from "react-toastify";
+
+import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 
 // COMPONENTS
 import Message from "../components/Message";
 import Loader  from "../components/Loader";
 
 // SLICES
-import { useGetOrderDetailsQuery } from "../slices/ordersApiSlice.ts";
+import { useGetOrderDetailsQuery, usePayOrderMutation, useGetPayPalClientIdQuery } from "../slices/ordersApiSlice.ts";
 
 const OrderScreen = () => {
     const { orderId } = useParams();
 
     const { data: order, isLoading, isError } = useGetOrderDetailsQuery( orderId ?? skipToken ); // add refetch when ready
 
+    const [ payOrder, { isLoading: loadingPay } ] = usePayOrderMutation();
+    const [ { isPending }, paypalDispatch ] = usePayPalScriptReducer();
+
+    const { data: paypal, isLoading: loadingPayPal, error: errorPayPal } = useGetPayPalClientIdQuery();
+
+    const { userInfo } = useSelector( ( state ) => state.auth);
+
+    useEffect(() => {
+        if ( ! errorPayPal && ! loadingPayPal && paypal.clientId ) {
+            const loadPayPalScript = async () => {
+                paypalDispatch({
+                  type: 'resetOptions',
+                  value: {
+                      'client-id': paypal.clientId,
+                      currency: 'USD'
+                  }
+                });
+                paypalDispatch({ type: 'setLoadingStatus', value: 'pending' });
+            }
+            if ( order && !order.isPaid ) {
+                if ( !window.paypal ) {
+                    loadPayPalScript();
+                }
+            }
+        }
+    }, [ order, paypal ] );
+
+    const onApproveTest = async () => {
+        console.log('onApproveTest');
+    }
+
     if ( isLoading ) return <Loader />;
     if ( isError || order === undefined ) return <Message variant="error">There was an error loading your order.</Message>;
 
     return (
-        <>
         <div className="grid grid-cols-12 gap-8 w-full">
             <div className="col-span-9">
                 <h1 className="text-xs text-gray-400 mb-4">{ order._id }</h1>
                 <h2 className="text-xl text-gray-600">{  }</h2>
                 <h2 className="mt-6 py-4 border-t border-gray-200 font-semibold text-2xl text-gray-400">Shipping</h2>
-                <p className="mb-2">{ order.user.name }</p>
+                <p className="mb-2">
+                    { order.user.name } <span className="text-gray-400">({order.user.email})</span>
+                </p>
                 <p className="mb-2">
                     { order.shippingAddress.address }, { order.shippingAddress.city } <br />
                     { order.shippingAddress.province } { order.shippingAddress.postalCode }
                 </p>
-                <p className="mb-2">{ order.user.email }</p>
 
                 <h2 className="mt-6 pt-4 pb-0 border-t border-gray-200 font-semibold text-2xl text-gray-400">Items</h2>
                 <div className="grid grid-cols-12 gap-8 text-sm uppercase text-gray-400 border-b border-gray-200 py-3">
@@ -68,6 +104,7 @@ const OrderScreen = () => {
             <div className="col-span-3">
                 <div className="border rounded-md border-gray-200 shadow-md p-4">
                     <h2 className="leading-tight mb-4 pb-4 border-b border-gray-200 font-semibold text-2xl text-gray-400">Order Summary</h2>
+
                     <div className="grid grid-cols-2 gap-8 py-1">
                         <div className="col-span-1 font-semibold">Subtotal:</div>
                         <div className="col-span-1 text-end">{ ( order.itemsPrice / 100 ).toLocaleString('en-US', { style: "currency", currency: "USD" } ) }</div>
@@ -88,30 +125,49 @@ const OrderScreen = () => {
                         <div className="col-span-1 text-end">{ ( order.totalPrice / 100 ).toLocaleString('en-US', { style: "currency", currency: "USD" } ) }</div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-8 py-1">
-                        <div className="col-span-1 font-semibold">Payment:</div>
-                        <div className="col-span-1 text-end">
-                            <span className={`ml-2 rounded py-1 px-2 text-xs text-white order.isPaid ? bg-green-500 : bg-red-500` }>
-                                { order.isPaid || "Not Paid" }
-                            </span>
-                        </div>
-                    </div>
+                    { !order.isPaid ? (
+                        <div className="py-1">
+                            { loadingPay && <Loader /> }
 
-                    <div className="grid grid-cols-2 gap-8 py-1">
-                        <div className="col-span-1 font-semibold">Delivery:</div>
-                        <div className="col-span-1 text-end">
-                           <span className={`ml-2 rounded py-1 px-2 text-xs text-white order.isDelivered ? bg-green-500 : bg-red-500` }
-                            >
-                        { order.isDelivered || "Not Delivered" }
-                    </span>
+                            { isPending ? <Loader />
+                                : (
+                                    <button type="button"
+                                            className="rounded py-2 px-4 text-sm font-bold uppercase text-white o bg-blue-500 w-full cursor-pointer"
+                                            onClick={ onApproveTest }
+                                    >
+                                        Pay Order (Test)
+                                    </button>
+                                )
+                            }
                         </div>
-                    </div>
+                    ) :
+                    (
+                        <>
+
+                            <div className="grid grid-cols-2 gap-8 py-1">
+                                <div className="col-span-1 font-semibold">Payment:</div>
+                                <div className="col-span-1 text-end">
+                                        <span className="rounded py-1 px-2 text-xs text-white bg-green-500">
+                                            Paid
+                                        </span>
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-8 py-1">
+                                <div className="col-span-1 font-semibold">Delivery:</div>
+                                <div className="col-span-1 text-end">
+                                   <span className={`ml-2 rounded py-1 px-2 text-xs text-white ${ order.isDelivered ? 'bg-green-500' : 'bg-red-500' }` }
+                                    >
+                                        { order.isDelivered || "Not Delivered" }
+                                    </span>
+                                </div>
+                            </div>
+
+                        </>
+                    )}
                 </div>
             </div>
 
         </div>
-        </>
-
     )
 }
 
