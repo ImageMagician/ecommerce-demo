@@ -1,9 +1,9 @@
 // GENERAL
-import {useEffect}       from "react";
-import {Link, useParams} from 'react-router-dom';
-import {skipToken}       from "@reduxjs/toolkit/query";
-import {toast}           from "react-toastify";
-import {format}          from "date-fns";
+import { useEffect }       from "react";
+import { Link, useParams } from 'react-router-dom';
+import { skipToken }       from "@reduxjs/toolkit/query";
+import { toast }           from "react-toastify";
+import { format }          from "date-fns";
 import { DISPATCH_ACTION, PayPalButtons, SCRIPT_LOADING_STATE, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 
 
