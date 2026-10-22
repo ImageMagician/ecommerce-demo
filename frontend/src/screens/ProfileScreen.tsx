@@ -12,12 +12,12 @@ import ErrorMessage from "../components/ErrorMessage.tsx";
 
 // SLICES
 import { useProfileMutation }  from "../slices/usersApiSlice.ts";
-import { useGetMyOrdersQuery} from "../slices/ordersApiSlice.ts";
+import { useGetMyOrdersQuery } from "../slices/ordersApiSlice.ts";
 import { setCredentials }      from "../slices/authSlice.ts";
 
 // TYPES
-import type { RootState }   from "../store.ts";
-import type { Order }       from "../slices/ordersApiSlice.ts";
+import type { RootState }           from "../store.ts";
+import type { Order, OrderItem }    from "../slices/ordersApiSlice.ts";
 
 const ProfileScreen = () => {
     const [ name, setName ]                 = useState("");
@@ -140,7 +140,7 @@ const ProfileScreen = () => {
                             </div>
                             <div className="order-list">
                             {
-                                orders ? orders.map( ( order: Order ) => (
+                                ( orders && orders.length > 0 ) ? orders.map( ( order: Order ) =>
                                     <div className="grid grid-cols-8 text-sm order-list-item" key={ order._id }>
                                         <div className="col-span-4">
                                             <Link to={`/order/${ order._id }`}
@@ -148,6 +148,12 @@ const ProfileScreen = () => {
                                             >
                                                 { order._id }
                                             </Link>
+                                            <div className="text-xs text-gray-500">
+                                                { order.orderItems.map( (item: OrderItem) =>
+                                                        <span className="me-3">{ item.name } ({ item.qty })</span>
+                                                    )
+                                                }
+                                            </div>
                                         </div>
                                         <div className="col-span-1">
                                             { format( order.createdAt, "MMM d, yyyy" ) }
@@ -162,11 +168,11 @@ const ProfileScreen = () => {
                                             { order.deliveredAt ? format( order.deliveredAt , "MMM d, yyyy" ) : <span className="font-bold text-red-600">&times;</span> }
                                         </div>
                                     </div>
-                                ) ) : (
-                                    <div className="text-center text-lg font-bold text-gray-600">
-                                        No orders found.
+                                 ) :
+                                    <div className="py-8 text-center text-lg font-bold text-gray-400">
+                                        No orders found
                                     </div>
-                            )}
+                            }
                             </div>
 
                         </>
