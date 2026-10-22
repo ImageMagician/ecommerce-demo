@@ -1,11 +1,11 @@
 // GENERAL
-import { useEffect }        from "react";
-import { Link, useParams }  from 'react-router-dom';
-import { skipToken }        from "@reduxjs/toolkit/query";
-import { toast }            from "react-toastify";
-import { format }           from "date-fns";
+import {useEffect}       from "react";
+import {Link, useParams} from 'react-router-dom';
+import {skipToken}       from "@reduxjs/toolkit/query";
+import {toast}           from "react-toastify";
+import {format}          from "date-fns";
+import { DISPATCH_ACTION, PayPalButtons, SCRIPT_LOADING_STATE, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 
-import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 
 // COMPONENTS
 import Message      from "../components/Message";
@@ -13,9 +13,9 @@ import Loader       from "../components/Loader";
 import ErrorMessage from "../components/ErrorMessage.tsx";
 
 // SLICES
-import { useGetOrderDetailsQuery, usePayOrderMutation, useGetPayPalClientIdQuery } from "../slices/ordersApiSlice.ts";
+import { useGetOrderDetailsQuery, useGetPayPalClientIdQuery, usePayOrderMutation } from "../slices/ordersApiSlice.ts";
 
-// Types
+// TYPES
 import type { CreateOrderActions, OnApproveActions } from "@paypal/paypal-js";
 
 const OrderScreen = () => {
@@ -32,13 +32,16 @@ const OrderScreen = () => {
         if ( !errorPayPal && !loadingPayPal && paypal?.clientId ) {
             const loadPayPalScript = async () => {
                 paypalDispatch({
-                  type: 'resetOptions',
+                  type: DISPATCH_ACTION.RESET_OPTIONS,
                   value: {
-                      'client-id': paypal.clientId,
+                      clientId: paypal.clientId,
                       currency: 'USD'
                   }
                 });
-                paypalDispatch({ type: 'setLoadingStatus', value: 'pending' });
+                paypalDispatch({
+                    type: DISPATCH_ACTION.LOADING_STATUS,
+                    value: SCRIPT_LOADING_STATE.PENDING
+                });
             }
             if ( order && !order.isPaid ) {
                 if ( !window.paypal ) {
@@ -49,11 +52,11 @@ const OrderScreen = () => {
     }, [ order, paypal ] );
 
     // FUNCTIONS
-    async function onApproveTest(){
-        await payOrder({ orderId: orderId!, details: { payer: {} } } );
-        refetch();
-        toast.success( 'Payment successful.' );
-    }
+    // async function onApproveTest(){
+    //     await payOrder({ orderId: orderId!, details: { payer: {} } } );
+    //     refetch();
+    //     toast.success( 'Payment successful.' );
+    // }
 
     async function onApprove( _data: unknown, actions: OnApproveActions ): Promise<void> {
         return actions.order?.capture()
@@ -76,22 +79,22 @@ const OrderScreen = () => {
         toast.error( msg );
     }
 
-    async function createOrder( _data: unknown, actions: CreateOrderActions ) {
+    if ( isLoading ) return <Loader />;
+    if ( isError || order === undefined ) return <Message variant="error">There was an error loading your order.</Message>;
+
+    const createOrder = ( _data: unknown, actions: CreateOrderActions ) => {
         return actions.order.create({
+            intent: "CAPTURE",
             purchase_units: [
                 {
                     amount: {
-                        value: order.totalPrice,
+                        currency_code: 'USD',
+                        value: order.totalPrice.toFixed( 2 ),
                     }
                 }
             ]
-        }).then( ( orderId: String ) => {
-            return orderId;
         });
     }
-
-    if ( isLoading ) return <Loader />;
-    if ( isError || order === undefined ) return <Message variant="error">There was an error loading your order.</Message>;
 
     return (
         <div className="grid grid-cols-12 gap-8 w-full">
