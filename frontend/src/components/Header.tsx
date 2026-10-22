@@ -13,11 +13,6 @@ import { faShoppingCart, faBars, faUserCircle } from '@fortawesome/free-solid-sv
 // Types
 import type { RootState } from '../store'
 
-type NavLink = {
-    href: string,
-    label: string,
-}
-
 const Header = () => {
     const { cartItems } = useSelector( ( state: RootState ) => state.cart );
     const { userInfo }  = useSelector( ( state: RootState ) => state.auth );
@@ -49,12 +44,6 @@ const Header = () => {
             console.log( err );
         }
     }
-
-    const links: NavLink[] = [
-        { href: "/profile", label: "Profile" },
-        { href: "/orders",  label: "Orders" },
-    ];
-
 
     return (
         <header className="sticky top-0 bg-white border-b border-gray-200 z-10">
@@ -91,13 +80,20 @@ const Header = () => {
 
                                         { isOpen && (
                                             <ul className={`sm:absolute w-full sm:top-full sm:left-0 sm:border sm:border-gray-300 sm:bg-white sm:rounded sm:shadow`}>
-                                                {links.map((link:any) => (
-                                                    <li key={ link.href }>
-                                                        <Link to={ link.href } className={`block w-full pl-6 pr-4 sm:px-4 py-2 text-white border-b border-b-white/30 sm:border-0 sm:text-gray-500 hover:text-gray-800 hover:bg-gray-100`}>{link.label}</Link>
-                                                    </li>
-                                                ))}
                                                 <li>
-                                                    <button onClick={ logoutHandler } className={`block cursor-pointer text-start w-full pl-6 pr-4 sm:px-4 py-2 text-white border-b border-b-white/30 sm:border-0 sm:text-gray-500 hover:text-gray-800 hover:bg-gray-100`}>Logout</button>
+                                                    <Link to="/profile"
+                                                          onClick={ toggleMenu}
+                                                          className={`block w-full pl-6 pr-4 sm:px-4 py-2 text-white border-b border-b-white/30 sm:border-0 sm:text-gray-500 hover:text-gray-800 hover:bg-gray-100`}
+                                                    >
+                                                        Profile
+                                                    </Link>
+                                                </li>
+                                                <li>
+                                                    <button onClick={ logoutHandler }
+                                                            className={`block cursor-pointer text-start w-full pl-6 pr-4 sm:px-4 py-2 text-white border-b border-b-white/30 sm:border-0 sm:text-gray-500 hover:text-gray-800 hover:bg-gray-100`}
+                                                    >
+                                                        Logout
+                                                    </button>
                                                 </li>
                                             </ul>
                                             )
