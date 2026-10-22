@@ -37,6 +37,7 @@ const Header = () => {
     const logoutHandler = async () => {
         try {
             await logoutApiCall().unwrap();
+            setIsOpen( false );
             dispatch( logout() );
             navigate("/login");
         }
@@ -79,22 +80,55 @@ const Header = () => {
                                         </button>
 
                                         { isOpen && (
-                                            <ul className={`sm:absolute w-full sm:top-full sm:left-0 sm:border sm:border-gray-300 sm:bg-white sm:rounded sm:shadow`}>
+
+                                            <ul className={`sm:absolute sm:top-full sm:left-0 sm:border sm:border-gray-300 sm:bg-white sm:rounded sm:shadow min-w-full py-1`}>
                                                 <li>
                                                     <Link to="/profile"
-                                                          onClick={ toggleMenu}
-                                                          className={`block w-full pl-6 pr-4 sm:px-4 py-2 text-white border-b border-b-white/30 sm:border-0 sm:text-gray-500 hover:text-gray-800 hover:bg-gray-100`}
+                                                          onClick={ toggleMenu }
+                                                          className={`block w-full pl-6 pr-4 sm:px-4 py-1 text-white border-b border-b-white/30 sm:border-0 sm:text-gray-500 hover:text-gray-800 hover:bg-gray-100`}
                                                     >
                                                         Profile
                                                     </Link>
                                                 </li>
                                                 <li>
                                                     <button onClick={ logoutHandler }
-                                                            className={`block cursor-pointer text-start w-full pl-6 pr-4 sm:px-4 py-2 text-white border-b border-b-white/30 sm:border-0 sm:text-gray-500 hover:text-gray-800 hover:bg-gray-100`}
+                                                            className={`block cursor-pointer text-start w-full pl-6 pr-4 sm:px-4 py-1 text-white border-b border-b-white/30 sm:border-0 sm:text-gray-500 hover:text-gray-800 hover:bg-gray-100`}
                                                     >
                                                         Logout
                                                     </button>
                                                 </li>
+
+                                                {/* ADMIN OPTIONS */}
+                                                { userInfo && userInfo.isAdmin && (
+                                                    <ul className="py-1 w-full">
+                                                        <li className="border-t border-gray-200 pt-3"></li>
+                                                        <li className="px-4 pb-1 whitespace-nowrap uppercase text-xs font-semibold text-gray-400">Admin Functions</li>
+                                                        <li>
+                                                            <Link to="/admin/products"
+                                                                  onClick={ toggleMenu }
+                                                                  className={`block w-full pl-6 pr-4 sm:px-4 py-1 text-white border-b border-b-white/30 sm:border-0 sm:text-gray-500 hover:text-gray-800 hover:bg-gray-100`}
+                                                            >
+                                                                Products
+                                                            </Link>
+                                                        </li>
+                                                        <li>
+                                                            <Link to="/admin/orders"
+                                                                  onClick={ toggleMenu }
+                                                                  className={`block w-full pl-6 pr-4 sm:px-4 py-1 text-white border-b border-b-white/30 sm:border-0 sm:text-gray-500 hover:text-gray-800 hover:bg-gray-100`}
+                                                            >
+                                                                Orders
+                                                            </Link>
+                                                        </li>
+                                                        <li>
+                                                            <Link to="/admin/users"
+                                                                  onClick={ toggleMenu }
+                                                                  className={`block w-full pl-6 pr-4 sm:px-4 py-1 text-white border-b border-b-white/30 sm:border-0 sm:text-gray-500 hover:text-gray-800 hover:bg-gray-100`}
+                                                            >
+                                                                Users
+                                                            </Link>
+                                                        </li>
+                                                    </ul>
+                                                )}
                                             </ul>
                                             )
                                         }
