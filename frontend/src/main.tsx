@@ -24,9 +24,11 @@ import PaymentScreen       from "./screens/PaymentScreen.tsx";
 import PlaceOrderScreen    from "./screens/PlaceOrderScreen.tsx";
 import OrderScreen         from "./screens/OrderScreen.tsx";
 import ProfileScreen       from "./screens/ProfileScreen.tsx";
+import OrderListScreen     from "./screens/OrderListScreen.tsx";
 
 // COMPONENTS
 import PrivateRoute from "./components/PrivateRoute";
+import AdminRoute   from "./components/AdminRoute";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -42,6 +44,9 @@ const router = createBrowserRouter(
                 <Route path="/placeorder"     element={ <PlaceOrderScreen /> } />
                 <Route path="/order/:orderId" element={ <OrderScreen /> } />
                 <Route path="/profile"        element={ <ProfileScreen /> } />
+            </Route>
+            <Route path="" element={ <AdminRoute /> }>
+                <Route path="/allorders" element={ <OrderListScreen /> }></Route>
             </Route>
         </Route>
     )
