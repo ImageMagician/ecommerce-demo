@@ -24,7 +24,7 @@ import PaymentScreen       from "./screens/PaymentScreen.tsx";
 import PlaceOrderScreen    from "./screens/PlaceOrderScreen.tsx";
 import OrderScreen         from "./screens/OrderScreen.tsx";
 import ProfileScreen       from "./screens/ProfileScreen.tsx";
-import OrderListScreen     from "./screens/OrderListScreen.tsx";
+import OrderListScreen     from "./screens/admin/OrderListScreen.tsx";
 
 // COMPONENTS
 import PrivateRoute from "./components/PrivateRoute";
