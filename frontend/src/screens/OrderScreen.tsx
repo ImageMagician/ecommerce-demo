@@ -30,7 +30,7 @@ const OrderScreen = () => {
     const { data: paypal, isLoading: loadingPayPal, error: errorPayPal } = useGetPayPalClientIdQuery();
 
     useEffect(() => {
-        if ( !errorPayPal && !loadingPayPal && paypal.clientId ) {
+        if ( !errorPayPal && !loadingPayPal && paypal?.clientId ) {
             const loadPayPalScript = async () => {
                 paypalDispatch({
                   type: 'resetOptions',
