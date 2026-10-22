@@ -51,7 +51,7 @@ const Header = () => {
     }
 
     const links: NavLink[] = [
-        { href: "/account", label: "Account" },
+        { href: "/profile", label: "Profile" },
         { href: "/orders",  label: "Orders" },
     ];
 
