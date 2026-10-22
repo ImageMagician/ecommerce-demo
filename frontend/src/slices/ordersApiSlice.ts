@@ -57,6 +57,10 @@ interface PayOrderArgs {
     details: Record<string, unknown>;
 }
 
+interface PayPalConfig {
+    clientId: string;
+}
+
 export const ordersApiSlice = apiSlice.injectEndpoints({
     endpoints: ( builder ) => ({
         createOrder: builder.mutation<Order, CreateOrderArgs>({
@@ -79,7 +83,7 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
                 body: { ...details }
             })
         }),
-        getPayPalClientId: builder.query({
+        getPayPalClientId: builder.query<PayPalConfig, void>({
             query: () => ({
                 url: PAYPAL_URL,
             }),
