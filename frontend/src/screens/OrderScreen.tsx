@@ -18,6 +18,7 @@ import { useGetOrderDetailsQuery, usePayOrderMutation, useGetPayPalClientIdQuery
 
 // Types
 import type { CreateOrderActions, OnApproveActions } from "@paypal/paypal-js";
+import type { RootState } from "../store.ts";
 
 const OrderScreen = () => {
     const { orderId } = useParams();
@@ -29,7 +30,7 @@ const OrderScreen = () => {
 
     const { data: paypal, isLoading: loadingPayPal, error: errorPayPal } = useGetPayPalClientIdQuery();
 
-    const { userInfo } = useSelector( ( state ) => state.auth);
+    const { userInfo } = useSelector( ( state: RootState ) => state.auth);
 
     useEffect(() => {
         if ( !errorPayPal && !loadingPayPal && paypal.clientId ) {
