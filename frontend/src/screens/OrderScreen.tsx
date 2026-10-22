@@ -2,7 +2,6 @@
 import { useEffect }        from "react";
 import { Link, useParams }  from 'react-router-dom';
 import { skipToken }        from "@reduxjs/toolkit/query";
-import { useSelector }      from 'react-redux';
 import { toast }            from "react-toastify";
 import { format }           from "date-fns";
 
