@@ -101,7 +101,7 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
             }),
             keepUnusedDataFor: 10,
         }),
-        deliverOrder: builder.mutation<Order, void>({
+        deliverOrder: builder.mutation<Order, string>({
             query: ( orderId ) => ({
                 url: `${ ORDERS_URL }/${ orderId }/deliver`,
                 method: 'PUT',
