@@ -12,6 +12,16 @@ export type Product = {
     product?: Product
 }
 
+export type User = {
+    _id: string,
+    name: string,
+    email: string,
+    password: string,
+    isAdmin: string,
+    createdAt: string,
+    updatedAt: string,
+}
+
 export type CartItem = {
     _id: string,
     name: string,
