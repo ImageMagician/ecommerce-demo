@@ -70,12 +70,6 @@ const OrderScreen = () => {
         }
     }
 
-    // async function onApproveTest(){
-    //     await payOrder({ orderId: orderId!, details: { payer: {} } } );
-    //     refetch();
-    //     toast.success( 'Payment successful.' );
-    // }
-
     async function onApprove( _data: unknown, actions: OnApproveActions ): Promise<void> {
         return actions.order?.capture()
             .then( async function (details ) {
@@ -193,12 +187,6 @@ const OrderScreen = () => {
                             { isPending ? <Loader />
                                 : (
                                     <>
-                                        {/*<button type="button"*/}
-                                        {/*        className="rounded py-2 px-4 mb-3 text-sm font-bold uppercase text-white o bg-blue-500 w-full cursor-pointer"*/}
-                                        {/*        onClick={ onApproveTest }*/}
-                                        {/*>*/}
-                                        {/*    Pay Order (Test)*/}
-                                        {/*</button>*/}
                                         <div>
                                             <PayPalButtons
                                                 createOrder={ createOrder }
