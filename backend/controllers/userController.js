@@ -141,7 +141,14 @@ const updateUserProfile = asyncHandler(async ( req, res ) => {
  * @access  Private
  */
 const getAllUsers = asyncHandler(async (req, res) => {
-    res.send('Get all users');
+    const users = await User.find({});
+
+    if ( ! users ) {
+        res.status(404);
+        throw new Error( 'No users found.' );
+    }
+
+    res.status(200).json(users);
 });
 
 /**
