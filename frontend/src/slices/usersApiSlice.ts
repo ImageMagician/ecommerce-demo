@@ -1,6 +1,8 @@
 import { USERS_URL } from '../constants';
 import { apiSlice }  from "./apiSlice";
 
+import type { User } from "../types.ts";
+
 interface LoginInfo {
     email: string;
     password: string;
@@ -42,7 +44,18 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 body: data,
             }),
         }),
+        getAllUsers: builder.query<User[], void>({
+            query: () => ({
+                url: USERS_URL,
+            }),
+            keepUnusedDataFor: 10,
+        })
     })
 });
 
-export const { useLoginMutation, useRegisterMutation, useLogoutMutation, useProfileMutation } = usersApiSlice;
+export const { useLoginMutation,
+    useRegisterMutation,
+    useLogoutMutation,
+    useProfileMutation,
+    useGetAllUsersQuery,
+} = usersApiSlice;
