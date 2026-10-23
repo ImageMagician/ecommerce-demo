@@ -19,11 +19,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const ProductListScreen = () => {
     const { data: products } = useGetProductsQuery();
 
-    const deleteProductHandler = ( id: string) => {
+    const deleteProductHandler = ( id: string ) => {
         console.log( 'deleting product', id );
     }
 
-    const editProductHandler = ( id: string) => {
+    const editProductHandler = ( id: string ) => {
         console.log( "editing product", id );
     }
 
@@ -83,12 +83,12 @@ const ProductListScreen = () => {
                                 <button type="button"
                                         onClick={ () => editProductHandler( product._id) }
                                 >
-                                    <FontAwesomeIcon icon={ faEdit } className="p-2 text-gray-400 hover:bg-gray-200 text-sm rounded cursor-pointer" />
+                                    <FontAwesomeIcon icon={ faEdit } size="sm" className="p-2 text-gray-400 hover:bg-gray-200 rounded cursor-pointer" />
                                 </button>
                                 <button type="button"
                                         onClick={ () => deleteProductHandler( product._id ) }
                                 >
-                                    <FontAwesomeIcon icon={faTrash} className="p-2 text-gray-400 hover:bg-gray-200 text-sm rounded cursor-pointer" />
+                                    <FontAwesomeIcon icon={faTrash} size="sm" className="p-2 text-gray-400 hover:bg-gray-200 rounded cursor-pointer" />
                                 </button>
                             </div>
                         </div>
