@@ -1,23 +1,22 @@
 // GENERAL
 import { Link }             from "react-router-dom";
+import { FontAwesomeIcon }  from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit }  from "@fortawesome/free-solid-svg-icons";
+import {toast}              from "react-toastify";
 
 // COMPONENTS
-/*
-import Message      from "../../components/Message.tsx";
 import Loader       from "../../components/Loader";
 import ErrorMessage from "../../components/ErrorMessage";
-*/
 
 // SLICES
-import { useGetProductsQuery } from "../../slices/productsApiSlice.ts";
+import { useGetProductsQuery, useCreateProductMutation } from "../../slices/productsApiSlice.ts";
 
 // TYPES
 import type { Product } from "../../types.ts";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ProductListScreen = () => {
-    const { data: products } = useGetProductsQuery();
+    const { data: products, isLoading }          = useGetProductsQuery();
+    const [ createProduct, { isLoading: loadingCreate } ] = useCreateProductMutation();
 
     const deleteProductHandler = ( id: string ) => {
         console.log( 'deleting product', id );
@@ -27,11 +26,23 @@ const ProductListScreen = () => {
         console.log( "editing product", id );
     }
 
+    const createProductHandler = async () => {
+        if ( window.confirm('Are you sure you want to create a new product?') ) {
+            try {
+                await createProduct().unwrap();
+            }
+            catch ( err ) {
+                toast.error( ErrorMessage( err ) );
+            }
+        }
+    }
+
     return <>
         <div className="flex justify-between items-center mb-5">
             <h1 className="text-3xl text-gray-500">Product List</h1>
             <button type="button"
                     className="primary-button"
+                    onClick={ createProductHandler }
             >
                 + Add Product
             </button>
@@ -48,8 +59,9 @@ const ProductListScreen = () => {
             <div className="col-span-1"></div>
 
         </div>
-        {
-            products && products.length > 0 ?
+        { loadingCreate && <Loader /> }
+        { isLoading ? <Loader />
+            : products && products.length > 0 ?
                 <div className="order-list">
                 {
                     products.map( ( product: Product ) =>
