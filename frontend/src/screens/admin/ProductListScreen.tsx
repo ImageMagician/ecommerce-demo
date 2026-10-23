@@ -14,7 +14,7 @@ import { useGetProductsQuery } from "../../slices/productsApiSlice.ts";
 
 // TYPES
 import type { Product } from "../../types.ts";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ProductListScreen = () => {
     const { data: products } = useGetProductsQuery();
