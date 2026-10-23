@@ -1,11 +1,11 @@
 // GENERAL
-import { useEffect }       from "react";
-import { Link, useParams } from 'react-router-dom';
-import { skipToken }       from "@reduxjs/toolkit/query";
-import { toast }           from "react-toastify";
-import { format }          from "date-fns";
+import { useEffect }        from "react";
+import { Link, useParams }  from 'react-router-dom';
+import { skipToken }        from "@reduxjs/toolkit/query";
+import { toast }            from "react-toastify";
+import { useSelector }      from "react-redux";
+import { format }           from "date-fns";
 import { DISPATCH_ACTION, PayPalButtons, SCRIPT_LOADING_STATE, usePayPalScriptReducer } from "@paypal/react-paypal-js";
-
 
 // COMPONENTS
 import Message      from "../components/Message";
@@ -13,18 +13,23 @@ import Loader       from "../components/Loader";
 import ErrorMessage from "../components/ErrorMessage.tsx";
 
 // SLICES
-import { useGetOrderDetailsQuery, useGetPayPalClientIdQuery, usePayOrderMutation } from "../slices/ordersApiSlice.ts";
+import { useGetOrderDetailsQuery, useGetPayPalClientIdQuery, usePayOrderMutation, useDeliverOrderMutation } from "../slices/ordersApiSlice.ts";
 
 // TYPES
 import type { CreateOrderActions, OnApproveActions } from "@paypal/paypal-js";
+import type { RootState } from "../store.ts";
 
 const OrderScreen = () => {
+    const { userInfo } = useSelector( ( state:RootState ) => state.auth);
+
     const { orderId } = useParams();
 
     const { data: order, isLoading, isError, refetch } = useGetOrderDetailsQuery( orderId ?? skipToken );
 
     const [ payOrder, { isLoading: loadingPay } ] = usePayOrderMutation();
     const [ { isPending }, paypalDispatch ]       = usePayPalScriptReducer();
+
+    const [ deliverOrder, { isLoading: loadingDeliver } ] = useDeliverOrderMutation();
 
     const { data: paypal, isLoading: loadingPayPal, error: errorPayPal } = useGetPayPalClientIdQuery();
 
@@ -52,6 +57,19 @@ const OrderScreen = () => {
     }, [ order, paypal ] );
 
     // FUNCTIONS
+    const setDeliveredHandler = async () => {
+        if ( !orderId ) return;
+
+        try {
+            await deliverOrder( orderId ).unwrap();
+            refetch();
+            toast.success('order delivered successfully.');
+        }
+        catch ( err ) {
+            toast.error( ErrorMessage( err ) );
+        }
+    }
+
     // async function onApproveTest(){
     //     await payOrder({ orderId: orderId!, details: { payer: {} } } );
     //     refetch();
@@ -196,21 +214,36 @@ const OrderScreen = () => {
                     (
                         <>
 
-                            <div className="grid grid-cols-2 gap-8 py-1">
+                            <div className="grid grid-cols-3 gap-8 py-1">
                                 <div className="col-span-1 font-semibold">Payment:</div>
-                                <div className="col-span-1 text-end">
+                                <div className="col-span-2 text-end">
                                         <span className="rounded py-1 px-2 text-xs text-white bg-green-500">
                                             { format( order.paidAt, 'MMM d, yyyy' ) }
                                         </span>
                                 </div>
                             </div>
-                            <div className="grid grid-cols-2 gap-8 py-1">
+                            <div className="grid grid-cols-3 gap-8 py-1">
                                 <div className="col-span-1 font-semibold">Delivery:</div>
-                                <div className="col-span-1 text-end">
-                                   <span className={`ml-2 rounded py-1 px-2 text-xs text-white ${ order.isDelivered ? 'bg-green-500' : 'bg-red-500' }` }
-                                    >
-                                        { order.isDelivered || "Not Delivered" }
-                                    </span>
+                                <div className="col-span-2 text-end">
+                                    {
+                                        order.isDelivered ?
+                                            <span
+                                                className="ml-2 rounded py-1 px-2 text-xs text-white bg-green-500"
+                                            >
+                                                { format( order.deliveredAt, 'MMM d, yyyy' ) }
+                                            </span>
+                                        : userInfo.isAdmin ?
+                                            <>
+                                                { loadingDeliver && <Loader /> }
+                                                <button onClick={ setDeliveredHandler }
+                                                        className="primary-button w-full"
+                                                >
+                                                    Deliver Order
+                                                </button>
+                                            </>
+                                            :
+                                            <span className="text-red-600 font-bold text-lg">&times;</span>
+                                    }
                                 </div>
                             </div>
 
