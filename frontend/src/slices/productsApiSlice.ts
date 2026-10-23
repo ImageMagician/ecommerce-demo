@@ -1,5 +1,10 @@
-import { PRODUCT_URL } from '../constants'
+// GENERAL
+import { PRODUCT_URL } from '../constants';
+
+// SLICES
 import { apiSlice} from "./apiSlice"
+
+// TYPES
 import type { Product } from "../types"
 
 export const productsApiSlice = apiSlice.injectEndpoints({
@@ -8,15 +13,23 @@ export const productsApiSlice = apiSlice.injectEndpoints({
             query: () => ({
                 url: PRODUCT_URL,
             }),
-            keepUnusedDataFor: 5
+            providesTags: [ 'Product' ],
+            keepUnusedDataFor: 5,
         }),
         getProductDetails: builder.query<Product, string>({
             query: (productId) => ({
                 url: `${PRODUCT_URL}/${productId}`,
             }),
             keepUnusedDataFor: 5
-        })
+        }),
+        createProduct: builder.mutation<Product, void>({
+            query: () => ({
+                url: `${ PRODUCT_URL }/create`,
+                method: 'POST'
+            }),
+            invalidatesTags: ['Product'],
+        }),
     })
 })
 
-export const { useGetProductsQuery, useGetProductDetailsQuery } = productsApiSlice
+export const { useGetProductsQuery, useGetProductDetailsQuery, useCreateProductMutation } = productsApiSlice
