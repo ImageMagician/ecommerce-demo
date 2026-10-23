@@ -13,7 +13,7 @@ router.route('/')   .get( getProducts );
 router.route('/:id').get( getProductById );
 
 // Admin
-router.route('/create').post( protect, isAdmin, createProduct );
-router.route('/update').put( protect, isAdmin, updateProduct );
+router.route('/create')    .post( protect, isAdmin, createProduct );
+router.route('/:id/update').put( protect, isAdmin, updateProduct );
 
 export default router;
