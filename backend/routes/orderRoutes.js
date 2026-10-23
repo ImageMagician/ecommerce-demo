@@ -18,7 +18,7 @@ router.route( '/:id/pay').put(  protect, updateOrderToPaid );
 router.route('/:id')     .get(  protect, getOrderById );
 
 // Admin
-router.route( '/:id/deliver').get( protect, isAdmin, updateOrderToDelivered );
+router.route( '/:id/deliver').put( protect, isAdmin, updateOrderToDelivered );
 router.route( '/' )          .get( protect, isAdmin, getAllOrders );
 
 export default router;
