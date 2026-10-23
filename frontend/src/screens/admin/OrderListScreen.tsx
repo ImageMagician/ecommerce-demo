@@ -43,7 +43,7 @@ const OrderListScreen = () => {
                             <div className="order-list">
                                 {
                                     orders.map( ( order ) => (
-                                       <div key={order._id} className="grid grid-cols-7 gap-8 text-sm order-list-item">
+                                       <div key={order._id} className="grid grid-cols-7 gap-8 text-sm order-list-item items-center">
                                            <div className="col-span-3">
                                                <Link to={`/order/${ order._id }`} className="text-blue-500 hover:text-blue-600 hover:underline">
                                                    { order.orderItems.map( item => <>
