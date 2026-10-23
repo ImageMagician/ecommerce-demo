@@ -5,7 +5,7 @@ import express from 'express';
 import { protect, isAdmin } from "../middleware/authMiddleware.js";
 
 // CONTROLLERS
-import { getProducts, getProductById, createProduct } from '../controllers/productController.js';
+import {getProducts, getProductById, createProduct, updateProduct } from '../controllers/productController.js';
 
 const router = express.Router();
 
@@ -14,5 +14,6 @@ router.route('/:id').get( getProductById );
 
 // Admin
 router.route('/create').post( protect, isAdmin, createProduct );
+router.route('/update').put( protect, isAdmin, updateProduct );
 
 export default router;
