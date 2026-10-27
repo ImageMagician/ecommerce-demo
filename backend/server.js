@@ -1,4 +1,5 @@
 // GENERAL
+import path          from "path";
 import express       from 'express';
 import dotenv        from 'dotenv';
 import connectDB     from "./config/db.js";
@@ -41,6 +42,9 @@ app.use( '/api/upload',   uploadRoutes );
 app.get( '/api/config/paypal', ( req, res ) =>
     res.send({ clientId: process.env.PAYPAL_CLIENT_ID } )
 );
+
+const __dirname = path.resolve();
+app.use ( '/uploads', express.static( path.join( __dirname, '/uploads' ) ) );
 
 // errorMiddleware
 app.use( notFound );
