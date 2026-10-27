@@ -32,7 +32,8 @@
     "date-fns": "^4.4.0",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
-    "mongoose": "^9.10.0"
+    "mongoose": "^9.10.0",
+    "multer": "^2.5.0"
   },
   "devDependencies": {
     "chokidar": "^5.0.0",
