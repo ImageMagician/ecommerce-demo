@@ -29,6 +29,7 @@ import ProfileScreen       from "./screens/ProfileScreen.tsx";
 import OrderListScreen     from "./screens/admin/OrderListScreen.tsx";
 import ProductListScreen   from "./screens/admin/ProductListScreen.tsx";
 import UserListScreen      from "./screens/admin/UserListScreen.tsx";
+import ProductEditScreen   from "./screens/admin/ProductEditScreen.tsx";
 
 // COMPONENTS
 import PrivateRoute from "./components/PrivateRoute";
@@ -50,9 +51,10 @@ const router = createBrowserRouter(
                 <Route path="/profile"        element={ <ProfileScreen /> } />
             </Route>
             <Route path="/admin" element={ <AdminRoute /> }>
-                <Route path="orders" element={ <OrderListScreen /> } />
-                <Route path="products" element={ <ProductListScreen /> } />
-                <Route path="users" element={ <UserListScreen /> } />
+                <Route path="orders"       element={ <OrderListScreen /> } />
+                <Route path="products"     element={ <ProductListScreen /> } />
+                <Route path="products/:id" element={ <ProductEditScreen /> } />
+                <Route path="users"        element={ <UserListScreen /> } />
             </Route>
         </Route>
     )
