@@ -12,6 +12,8 @@ export type Product = {
     product?: Product
 }
 
+export type ProductUpdate = Omit<Product, "rating" | "numReviews">;
+
 export type User = {
     _id: string,
     name: string,
