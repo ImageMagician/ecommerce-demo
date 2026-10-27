@@ -14,6 +14,16 @@ import { useGetProductDetailsQuery, useUpdateProductMutation } from "../../slice
 import type { Product } from "../../types";
 
 const ProductEditScreen = () => {
+    const { id: productId } = useParams();
+
+    const [ name, setName ]                 = useState("");
+    const [ image, setImage ]               = useState("");
+    const [ price, setPrice ]               = useState("");
+    const [ brand, setBrand ]               = useState("");
+    const [ category, setCategory ]         = useState("");
+    const [ countInStock, setCountInStock ] = useState("");
+    const [ description, setDescription ]   = useState("");
+
     return (
         <h1>Product edit screen</h1>
     )
