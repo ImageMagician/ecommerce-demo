@@ -22,10 +22,6 @@ const ProductListScreen = () => {
         console.log( 'deleting product', id );
     }
 
-    const editProductHandler = ( id: string ) => {
-        console.log( "editing product", id );
-    }
-
     const createProductHandler = async () => {
         if ( window.confirm('Are you sure you want to create a new product?') ) {
             try {
@@ -92,11 +88,9 @@ const ProductListScreen = () => {
                                 { product.rating }
                             </div>
                             <div className="col-span-1 text-center">
-                                <button type="button"
-                                        onClick={ () => editProductHandler( product._id) }
-                                >
+                                <Link to={ `/admin/products/${ product._id }` }>
                                     <FontAwesomeIcon icon={ faEdit } size="sm" className="p-2 text-gray-400 hover:bg-gray-200 rounded cursor-pointer" />
-                                </button>
+                                </Link>
                                 <button type="button"
                                         onClick={ () => deleteProductHandler( product._id ) }
                                 >
