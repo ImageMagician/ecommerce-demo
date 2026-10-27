@@ -9,11 +9,12 @@ import {getProducts, getProductById, createProduct, updateProduct } from '../con
 
 const router = express.Router();
 
-router.route('/')   .get( getProducts );
-router.route('/:id').get( getProductById );
+router.route('/')
+    .get( getProducts )                         // Public: view
+    .post( protect, isAdmin, createProduct );   // Admin: create product
 
-// Admin
-router.route('/create')    .post( protect, isAdmin, createProduct );
-router.route('/:id/update').put( protect, isAdmin, updateProduct );
+router.route('/:id')
+    .get( getProductById )                      // Public: view
+    .put( protect, isAdmin, updateProduct );    // Admin: update product
 
 export default router;
