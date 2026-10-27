@@ -63,13 +63,13 @@ const updateProduct = asyncHandler( async ( req, res ) => {
         throw new Error('Product not found');
     }
 
-    product.name         = name;
-    product.price        = price;
-    product.description  = description;
-    product.image        = image;
-    product.brand        = brand;
-    product.category     = category;
-    product.countInStock = countInStock;
+    product.name         = name         ?? product.name;
+    product.price        = price        ?? product.price;
+    product.description  = description  ?? product.description;
+    product.image        = image        ?? product.image;
+    product.brand        = brand        ?? product.brand;
+    product.category     = category     ?? product.category;
+    product.countInStock = countInStock ?? product.countInStock;
 
     const updatedProduct = await product.save();
 
