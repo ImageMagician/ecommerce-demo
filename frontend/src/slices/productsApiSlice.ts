@@ -5,7 +5,7 @@ import { PRODUCT_URL } from '../constants';
 import { apiSlice} from "./apiSlice"
 
 // TYPES
-import type { Product } from "../types"
+import type { Product, ProductUpdate } from "../types"
 
 export const productsApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -20,6 +20,12 @@ export const productsApiSlice = apiSlice.injectEndpoints({
             query: ( productId ) => ({
                 url: `${ PRODUCT_URL }/${ productId }`,
             }),
+            providesTags: ( _result, _error, productId ) => [
+                {
+                    type: "Product",
+                    id: productId
+                },
+            ],
             keepUnusedDataFor: 5
         }),
         createProduct: builder.mutation<Product, void>({
@@ -27,11 +33,11 @@ export const productsApiSlice = apiSlice.injectEndpoints({
                 url: PRODUCT_URL,
                 method: 'POST'
             }),
-            invalidatesTags: ['Product'],
+            invalidatesTags: [ 'Product' ],
         }),
-        updateProduct: builder.mutation<Product, void>({
+        updateProduct: builder.mutation<Product, ProductUpdate>({
             query: ( data ) => ({
-                url: `${ PRODUCT_URL }/:id`,
+                url: `${ PRODUCT_URL }/${ data._id }`,
                 method: 'PUT',
                 body: data,
             }),
