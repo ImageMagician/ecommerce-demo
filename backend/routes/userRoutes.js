@@ -17,8 +17,8 @@ import {
 
 const router = express.Router();
 
-router.post( '/login', authUser );
-router.post( '/logout', logoutUser );
+router.post( '/login',    authUser );
+router.post( '/logout',   logoutUser );
 router.post( '/register', registerUser );
 router.route('/profile')
     .get( protect, getUserProfile )
