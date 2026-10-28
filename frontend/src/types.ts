@@ -29,6 +29,8 @@ export type User = {
     updatedAt: string,
 }
 
+export type UserUpdate = Omit<User, 'createdAt' | 'updatedAt'>;
+
 export type CartItem = {
     _id: string,
     name: string,
