@@ -18,7 +18,7 @@ import type { User } from "../../types.ts";
 
 const UserListScreen = () => {
     const { data: users, isLoading, error }           = useGetAllUsersQuery();
-    const [ deleteUser, { isLoading: loadingDelete }] = useDeleteUserByIdMutation();
+    const [ deleteUser, { isLoading: loadingDelete } ] = useDeleteUserByIdMutation();
 
     const editUserHandler = ( id: string ) => {
         console.log('edit user: ', id);
