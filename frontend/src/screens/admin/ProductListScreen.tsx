@@ -9,17 +9,25 @@ import Loader       from "../../components/Loader";
 import ErrorMessage from "../../components/ErrorMessage";
 
 // SLICES
-import { useGetProductsQuery, useCreateProductMutation } from "../../slices/productsApiSlice.ts";
+import { useGetProductsQuery, useCreateProductMutation, useDeleteProductMutation } from "../../slices/productsApiSlice.ts";
 
 // TYPES
 import type { Product } from "../../types.ts";
 
 const ProductListScreen = () => {
-    const { data: products, isLoading }          = useGetProductsQuery();
+    const { data: products, isLoading }                   = useGetProductsQuery();
     const [ createProduct, { isLoading: loadingCreate } ] = useCreateProductMutation();
+    const [ deleteProduct, { isLoading: loadingDelete } ] = useDeleteProductMutation();
 
-    const deleteProductHandler = ( id: string ) => {
-        console.log( 'deleting product', id );
+    const deleteProductHandler = async ( id: string ) => {
+        if ( window.confirm( "Are you sure you want to delete this product?" ) ) {
+            try {
+                await deleteProduct( id );
+            }
+            catch ( err ) {
+                toast.error( ErrorMessage( err ) );
+            }
+        }
     }
 
     const createProductHandler = async () => {
@@ -32,6 +40,7 @@ const ProductListScreen = () => {
             }
         }
     }
+
 
     return <>
         <div className="flex justify-between items-center mb-5">
@@ -56,6 +65,7 @@ const ProductListScreen = () => {
 
         </div>
         { loadingCreate && <Loader /> }
+        { loadingDelete && <Loader /> }
         { isLoading ? <Loader />
             : products && products.length > 0 ?
                 <div className="order-list">
@@ -99,13 +109,13 @@ const ProductListScreen = () => {
                             </div>
                         </div>
                     )
-                }
-                </div>
+            }
+            </div>
 
-            :
-                <div className="text-center py-8 text-lg text-semibold text-gray-500">
-                    No products found.
-                </div>
+        :
+            <div className="text-center py-8 text-lg text-semibold text-gray-500">
+                No products found.
+            </div>
         }
     </>
 }
