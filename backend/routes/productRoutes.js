@@ -20,6 +20,6 @@ router.route('/')
 router.route('/:id')
     .get   ( getProductById )                      // Public: view
     .put   ( protect, isAdmin, updateProduct )     // Admin: update product
-    .delete( protect, isAdmin, deleteProduct ); // Admin: delete product
+    .delete( protect, isAdmin, deleteProduct );    // Admin: delete product
 
 export default router;
