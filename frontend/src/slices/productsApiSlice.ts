@@ -50,7 +50,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
                 body: data,
             }),
         }),
-        deleteProduct: builder.mutation({
+        deleteProduct: builder.mutation<void, string>({
             query: ( productId ) => ({
                 url: `${ PRODUCT_URL }/${ productId }`,
                 method: 'DELETE',
