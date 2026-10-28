@@ -55,6 +55,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
                 url: `${ PRODUCT_URL }/${ productId }`,
                 method: 'DELETE',
             }),
+            invalidatesTags: [ 'Product' ],
         }),
     })
 })
