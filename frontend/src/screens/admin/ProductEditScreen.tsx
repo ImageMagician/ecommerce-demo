@@ -11,9 +11,12 @@ import FormContainer from "../../components/FormContainer.tsx";
 import ErrorMessage  from "../../components/ErrorMessage.tsx";
 
 // SLICES
-import { useGetProductDetailsQuery, useUpdateProductMutation } from "../../slices/productsApiSlice.ts";
+import { useGetProductDetailsQuery,
+    useUpdateProductMutation,
+    useUploadProductImageMutation } from "../../slices/productsApiSlice.ts";
 
 // TYPES
+import type { ChangeEvent }   from "react";
 import type { ProductUpdate } from "../../types";
 
 const ProductEditScreen = () => {
@@ -32,6 +35,8 @@ const ProductEditScreen = () => {
 
     const [ updateProduct, { isLoading:loadingUpdate } ] = useUpdateProductMutation();
 
+    const [ uploadProductImage, { isLoading: loadingImageUpload } ] = useUploadProductImageMutation();
+
     useEffect( () => {
         if ( product ) {
             setName         ( product.name );
@@ -43,6 +48,23 @@ const ProductEditScreen = () => {
             setCountInStock ( String ( product.countInStock ) );
         }
     }, [ product ] );
+
+    const uploadFileHandler = async ( e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if ( !file ) return;
+
+        const formData = new FormData();
+        formData.append("image", file );
+
+        try {
+            const res = await uploadProductImage( formData ).unwrap();
+            toast.success( res.message );
+            setImage(res.image);
+        }
+        catch ( err ) {
+            toast.error( ErrorMessage( err ) );
+        }
+    }
 
     const submitHandler = async ( e: { preventDefault: () => void; } ) => {
         e.preventDefault();
@@ -86,7 +108,7 @@ const ProductEditScreen = () => {
         { isLoading && <Loader /> }
         { error && <Message variant="error">There was an error loading the product.</Message> }
 
-        <form onSubmit={ submitHandler } encType="multipart/form-data">
+        <form onSubmit={ submitHandler }>
             <div className="mb-4">
                 <label htmlFor="name"
                        className="label"
@@ -108,13 +130,19 @@ const ProductEditScreen = () => {
                 >
                     Image
                 </label>
+                <input type="text"
+                       className="input-text"
+                       value={ image }
+                       disabled
+                />
                 <input type="file"
                        className="input-text"
                        id="image"
                        name="image"
-                       placeholder="Click to add photo"
-                       onChange={ (e) => setImage(e.target.value) }
+                       accept=".jpg,.jpeg,.png,.webp"
+                       onChange={ uploadFileHandler }
                 />
+                { loadingImageUpload && <Loader /> }
             </div>
             <div className="mb-4">
                 <label htmlFor="brand"
