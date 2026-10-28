@@ -23,6 +23,7 @@ const ProductListScreen = () => {
         if ( window.confirm( "Are you sure you want to delete this product?" ) ) {
             try {
                 await deleteProduct( id );
+                toast.success( "Product deleted successfully." );
             }
             catch ( err ) {
                 toast.error( ErrorMessage( err ) );
