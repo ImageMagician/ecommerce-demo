@@ -28,12 +28,25 @@ function checkFileType( file, cb ) {
 
 const upload = multer({
     storage,
-})
+    fileFilter: ( req, file, cb ) => checkFileType( file, cb ),
+});
 
-router.post('/', upload.single('image'), ( req, res) => {
-    res.send({
-        message: 'Image uploaded',
-        image: `/${ req.file.path }`
+const uploadImage = upload.single('image');
+
+router.post('/', ( req, res) => {
+    uploadImage( req, res, ( err ) => {
+        if ( err ) {
+            return res.status( 400 ).send({ message: err.message });
+        }
+
+        if ( !req.file ) {
+            return res.status( 400 ).send({ message: err.message } );
+        }
+
+        res.send({
+            message: 'Image uploaded',
+            image: `/${ req.file.path.replace(/\\/g, '/') }`
+        });
     });
 });
 
