@@ -1,7 +1,7 @@
 import { USERS_URL } from '../constants';
 import { apiSlice }  from "./apiSlice";
 
-import type { User } from "../types.ts";
+import type { User, UserUpdate } from "../types.ts";
 
 interface LoginInfo {
     email: string;
@@ -48,7 +48,22 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             query: () => ({
                 url: USERS_URL,
             }),
-            keepUnusedDataFor: 10,
+            providesTags: [ 'User' ],
+            keepUnusedDataFor: 5,
+        }),
+        updateUserById: builder.mutation<User, UserUpdate>({
+            query: ( data ) => ({
+                url: `${ USERS_URL }/${ data._id }`,
+                method: 'PUT',
+                body: data,
+            }),
+        }),
+        deleteUserById: builder.mutation({
+            query: ( userId ) => ({
+                url: `${ USERS_URL }/${ userId }`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: [ 'User' ],
         })
     })
 });
@@ -58,4 +73,6 @@ export const { useLoginMutation,
     useLogoutMutation,
     useProfileMutation,
     useGetAllUsersQuery,
+    useUpdateUserByIdMutation,
+    useDeleteUserByIdMutation,
 } = usersApiSlice;
