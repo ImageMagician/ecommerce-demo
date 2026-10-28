@@ -53,6 +53,12 @@ const createProduct = asyncHandler( async (req, res) => {
     res.status( 201 ).json( createdProduct );
 })
 
+/**
+ * @type {(function(*, *, *): void)|*}
+ * @desc    UPDATE existing product
+ * @route   PUT /api/products
+ * @access  PRIVATE
+ */
 const updateProduct = asyncHandler( async ( req, res ) => {
     const { name, price, description, image, brand, category, countInStock } = req.body;
 
@@ -76,4 +82,21 @@ const updateProduct = asyncHandler( async ( req, res ) => {
     res.json( updatedProduct );
 });
 
-export { getProducts, getProductById, createProduct, updateProduct };
+/**
+ * @type {(function(*, *, *): void)|*}
+ * @desc    DELETE a current products
+ * @route   DELETE /api/products/:id
+ * @access  PRIVATE
+ */
+const deleteProduct = asyncHandler( async ( req, res ) => {
+    const product = await Product.findById( req.params.id );
+    if ( !product ) {
+        res.status( 404 );
+        throw new Error('Product not found');
+    }
+
+    await Product.deleteOne({ _id: product._id });
+    res.status( 200 ).json( "Product deleted successfully" );
+})
+
+export { getProducts, getProductById, createProduct, updateProduct, deleteProduct };
