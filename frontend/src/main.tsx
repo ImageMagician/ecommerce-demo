@@ -30,6 +30,7 @@ import OrderListScreen     from "./screens/admin/OrderListScreen.tsx";
 import ProductListScreen   from "./screens/admin/ProductListScreen.tsx";
 import UserListScreen      from "./screens/admin/UserListScreen.tsx";
 import ProductEditScreen   from "./screens/admin/ProductEditScreen.tsx";
+import UserEditScreen      from "./screens/admin/UserEditScreen.tsx";
 
 // COMPONENTS
 import PrivateRoute from "./components/PrivateRoute";
@@ -55,6 +56,7 @@ const router = createBrowserRouter(
                 <Route path="products"     element={ <ProductListScreen /> } />
                 <Route path="products/:id" element={ <ProductEditScreen /> } />
                 <Route path="users"        element={ <UserListScreen /> } />
+                <Route path="users/:id"    element={ <UserEditScreen /> } />
             </Route>
         </Route>
     )
