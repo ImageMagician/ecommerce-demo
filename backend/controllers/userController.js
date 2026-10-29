@@ -183,6 +183,8 @@ const updateUserById = asyncHandler(async (req, res) => {
     user.name     = req.body.name || user.name;
     user.email    = req.body.email || user.email;
     user.password = req.body.password || user.password;
+
+    // check against an admin setting being overwritten
     if ( req.body.isAdmin !== undefined ) {
         user.isAdmin  = Boolean( req.body.isAdmin );
     }
