@@ -3,6 +3,7 @@ import { FontAwesomeIcon }  from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit }  from "@fortawesome/free-solid-svg-icons";
 import { format }           from "date-fns";
 import { toast }            from "react-toastify";
+import { Link }             from "react-router-dom";
 
 //COMPONENTS
 import Loader       from "../../components/Loader.tsx";
@@ -19,10 +20,6 @@ import type { User } from "../../types.ts";
 const UserListScreen = () => {
     const { data: users, isLoading, error }           = useGetAllUsersQuery();
     const [ deleteUser, { isLoading: loadingDelete } ] = useDeleteUserByIdMutation();
-
-    const editUserHandler = ( id: string ) => {
-        console.log('edit user: ', id);
-    }
 
     const deleteUserHandler = async ( id: string ) => {
         if ( window.confirm( "Are you sure you want to delete user?" ) ) {
@@ -69,12 +66,11 @@ const UserListScreen = () => {
                             { format( user.createdAt, "MMM d, yyyy" ) }
                         </div>
                         <div className="col-span-1">
-                            <button type="button"
+                            <Link to={ `/admin/users/${ user._id }` }
                                     className="p-2 text-gray-400 hover:bg-gray-200 rounded cursor-pointer"
-                                    onClick={ () => editUserHandler( user._id ) }
                             >
-                                <FontAwesomeIcon icon={faEdit} size="sm" />
-                            </button>
+                                <FontAwesomeIcon icon={ faEdit } size="sm" />
+                            </Link>
                             <button type="button"
                                     className="p-2 text-gray-400 hover:bg-gray-200 rounded cursor-pointer"
                                     onClick={ () => deleteUserHandler( user._id ) }
