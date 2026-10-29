@@ -9,7 +9,6 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import Loader from "../../components/Loader.tsx";
 import Message from "../../components/Message";
 import FormContainer from "../../components/FormContainer.tsx";
-import ErrorMessage from "../../components/ErrorMessage";
 
 import { useGetUserByIdQuery, useUpdateUserByIdMutation } from "../../slices/usersApiSlice.ts";
 
@@ -21,7 +20,7 @@ const UserEditScreen = () => {
 
     const { id: userId } = useParams();
     const { data: user, isLoading: userLoading, error } = useGetUserByIdQuery( userId ?? skipToken );
-    const [ updateUser, { isLoading: loadingUpdateUser } ] = useUpdateUserByIdMutation();
+    const [ updateUser ] = useUpdateUserByIdMutation();
 
     const navigate = useNavigate();
 
