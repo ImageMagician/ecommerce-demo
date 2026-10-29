@@ -180,11 +180,15 @@ const updateUserById = asyncHandler(async (req, res) => {
         throw new Error( 'User not found.' );
     }
 
-    user.name    = req.body.name || user.name;
-    user.email   = req.body.email || user.email;
-    user.isAdmin = Boolean( req.body.isAdmin );
+    user.name     = req.body.name || user.name;
+    user.email    = req.body.email || user.email;
+    user.password = req.body.password || user.password;
+    if ( req.body.isAdmin !== undefined ) {
+        user.isAdmin  = Boolean( req.body.isAdmin );
+    }
 
     const updatedUser = await user.save();
+
     res.status( 200 ).json({
         _id:     updatedUser._id,
         name:    updatedUser.name,
