@@ -1,18 +1,21 @@
-import { useState, useEffect }    from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { skipToken }              from "@reduxjs/toolkit/query/react";
-import { toast }                  from "react-toastify";
-import { useSelector }            from "react-redux";
-import { FontAwesomeIcon }        from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash }      from "@fortawesome/free-solid-svg-icons";
+import { useState, useEffect }      from "react";
+import { useNavigate, useParams }   from "react-router-dom";
+import { skipToken }                from "@reduxjs/toolkit/query/react";
+import { toast }                    from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { FontAwesomeIcon }          from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash }        from "@fortawesome/free-solid-svg-icons";
 
-import Loader        from "../../components/Loader.tsx";
+// COMPONENTS
+import Loader        from "../../components/Loader";
 import Message       from "../../components/Message";
-import FormContainer from "../../components/FormContainer.tsx";
+import FormContainer from "../../components/FormContainer";
+import ErrorMessage  from "../../components/ErrorMessage";
 
-import { useGetUserByIdQuery, useUpdateUserByIdMutation } from "../../slices/usersApiSlice.ts";
+// SLICES
+import { useGetUserByIdQuery, useUpdateUserByIdMutation } from "../../slices/usersApiSlice";
+import { setCredentials } from "../../slices/authSlice";
 
-import type { UserUpdate } from "../../types";
 import type { RootState }  from "../../store";
 
 const UserEditScreen = () => {
@@ -23,13 +26,16 @@ const UserEditScreen = () => {
     const { data: user, isLoading: userLoading, error } = useGetUserByIdQuery( userId ?? skipToken );
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    const [ name, setName ]                       = useState( "" );
-    const [ email, setEmail ]                     = useState( "" );
-    const [ isAdmin, setIsAdmin ]                 = useState<boolean>( false );
-    const [ password, setPassword ]               = useState( "" );
-    const [ showPassword, setShowPassword ]       = useState<boolean>( false );
-    const [ confirmPassword, setConfirmPassword ] = useState( "" );
+    const [ name, setName ]                               = useState( "" );
+    const [ email, setEmail ]                             = useState( "" );
+    const [ password, setPassword ]                       = useState( "" );
+    const [ confirmPassword, setConfirmPassword ]         = useState( "" );
+
+    const [ isAdmin, setIsAdmin ]                         = useState<boolean>( false );
+    const [ showPassword, setShowPassword ]               = useState<boolean>( false );
+    const [ showConfirmPassword, setShowConfirmPassword ] = useState<boolean>( false );
 
     useEffect(() => {
         if ( user ) {
@@ -51,28 +57,30 @@ const UserEditScreen = () => {
             return toast.error( `Passwords do not match` );
         }
 
-        const userUpdateInfo: UserUpdate = {
-            _id: userId,
-            name,
-            email,
-            isAdmin: isAdmin,
-            password: password || user.password,
-        }
+        try {
+            const updated = await updateUser({
+                _id: userId,
+                name,
+                email,
+                isAdmin: isAdmin,
+                password: password || user.password,
+            }).unwrap();
 
-        const res = await updateUser( userUpdateInfo );
+            // update localStorage settings for admin
+            if ( adminUser && updated._id === adminUser._id ) {
+                dispatch ( setCredentials({ ...adminUser, ...updated }) );
+            }
 
-        if ( "error" in res) {
-            toast.error( "Error updating user." );
-        }
-        else {
             toast.success( "User successfully updated." );
             navigate("/admin/users");
         }
+        catch ( err ) {
+            toast.error( ErrorMessage( err ) );
+        }
     }
 
-    function showHidePassword() {
-        setShowPassword( !showPassword );
-    }
+    const showHidePassword = () => setShowPassword( !showPassword );
+    const showHideConfirmPassword = () => setShowConfirmPassword( !showConfirmPassword );
 
     return <FormContainer>
         <h1 className="text-3xl font-semibold text-gray-500 mb-4">Edit User</h1>
@@ -111,7 +119,7 @@ const UserEditScreen = () => {
                            onChange={ ( e ) => setPassword( e.target.value ) }
                     />
                     <button type="button"
-                            className="absolute right-6 top-2"
+                            className="absolute right-4 top-2 cursor-pointer"
                             onClick={ showHidePassword }
                     >
                         <FontAwesomeIcon icon={ showPassword ? faEyeSlash : faEye } />
@@ -121,17 +129,17 @@ const UserEditScreen = () => {
             <div className="mb-4">
                 <label htmlFor="confirmPassword" className="form-label">Confirm Password <span className="text-gray-400">(optional)</span></label>
                 <div className="relative">
-                    <input type={ showPassword ? 'text' : 'password' }
+                    <input type={ showConfirmPassword ? 'text' : 'password' }
                            id="confirmPassword"
                            name="confirmPassword"
                            className="input-text"
                            onChange={ ( e ) => setConfirmPassword( e.target.value ) }
                     />
                     <button type="button"
-                            className="absolute right-6 top-2"
-                            onClick={ showHidePassword }
+                            className="absolute right-4 top-2 cursor-pointer"
+                            onClick={ showHideConfirmPassword }
                     >
-                        <FontAwesomeIcon icon={ showPassword ? faEyeSlash : faEye } />
+                        <FontAwesomeIcon icon={ showConfirmPassword ? faEyeSlash : faEye } />
                     </button>
                 </div>
             </div>
