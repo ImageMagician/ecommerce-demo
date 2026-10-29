@@ -24,7 +24,7 @@ export type User = {
     name: string,
     email: string,
     password: string,
-    isAdmin: string,
+    isAdmin: boolean,
     createdAt: string,
     updatedAt: string,
 }
