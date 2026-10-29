@@ -1,35 +1,35 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect }    from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { skipToken } from "@reduxjs/toolkit/query/react";
-import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { skipToken }              from "@reduxjs/toolkit/query/react";
+import { toast }                  from "react-toastify";
+import { useSelector }            from "react-redux";
+import { FontAwesomeIcon }        from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash }      from "@fortawesome/free-solid-svg-icons";
 
-import Loader from "../../components/Loader.tsx";
-import Message from "../../components/Message";
+import Loader        from "../../components/Loader.tsx";
+import Message       from "../../components/Message";
 import FormContainer from "../../components/FormContainer.tsx";
 
 import { useGetUserByIdQuery, useUpdateUserByIdMutation } from "../../slices/usersApiSlice.ts";
 
 import type { UserUpdate } from "../../types";
-import type { RootState } from "../../store";
+import type { RootState }  from "../../store";
 
 const UserEditScreen = () => {
     const { userInfo: adminUser } = useSelector( ( state: RootState ) => state.auth );
 
     const { id: userId } = useParams();
-    const { data: user, isLoading: userLoading, error } = useGetUserByIdQuery( userId ?? skipToken );
     const [ updateUser ] = useUpdateUserByIdMutation();
+    const { data: user, isLoading: userLoading, error } = useGetUserByIdQuery( userId ?? skipToken );
 
     const navigate = useNavigate();
 
-    const [ name, setName ]       = useState( "" );
-    const [ email, setEmail ]     = useState( "" );
-    const [ isAdmin, setIsAdmin ] = useState<boolean>( false );
-    const [ password, setPassword ] = useState( "" );
+    const [ name, setName ]                       = useState( "" );
+    const [ email, setEmail ]                     = useState( "" );
+    const [ isAdmin, setIsAdmin ]                 = useState<boolean>( false );
+    const [ password, setPassword ]               = useState( "" );
+    const [ showPassword, setShowPassword ]       = useState<boolean>( false );
     const [ confirmPassword, setConfirmPassword ] = useState( "" );
-    const [ showPassword, setShowPassword ] = useState<boolean>( false );
 
     useEffect(() => {
         if ( user ) {
