@@ -9,7 +9,8 @@ import {getProducts,
     getProductById,
     createProduct,
     updateProduct,
-    deleteProduct } from '../controllers/productController.js';
+    deleteProduct,
+    reviewProduct } from '../controllers/productController.js';
 
 const router = express.Router();
 
@@ -21,5 +22,8 @@ router.route('/:id')
     .get   ( getProductById )                      // Public: view
     .put   ( protect, isAdmin, updateProduct )     // Admin: update product
     .delete( protect, isAdmin, deleteProduct );    // Admin: delete product
+
+router.route('/:id/review')
+    .post( protect, reviewProduct );
 
 export default router;
