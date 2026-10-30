@@ -18,14 +18,14 @@ const HomeScreen = () => {
                         <Loader />
                     )
                     : error ? (
-                            <Message variant="error"
-                                     message={ 'data' in error
+                            <Message variant="error">
+                                     { 'data' in error
                                         ? (error.data as ApiError)?.message
                                         : 'message' in error
                                             ?  error.message
                                             : 'An error occurred.'
                                     }
-                            />
+                            </Message>
                         )
                         : (<>
                             <h1 className={`text-3xl font-semibold mb-3`}>Latest Products</h1>

@@ -88,14 +88,14 @@ const ProductDetailScreen = () => {
                         <Loader />
                     )
                     : error ? (
-                            <Message variant="error"
-                                     message={'data' in error
+                            <Message variant="error">
+                                     {'data' in error
                                         ? (error.data as ApiError)?.message
                                         : 'message' in error
                                             ? error.message
                                             : 'An error occurred.'
                                     }
-                            />
+                            </Message>
                         )
                         : (
                             <>
