@@ -99,4 +99,41 @@ const deleteProduct = asyncHandler( async ( req, res ) => {
     res.status( 200 ).json( "Product deleted successfully" );
 })
 
-export { getProducts, getProductById, createProduct, updateProduct, deleteProduct };
+
+/**
+ * @type {(function(*, *, *): void)|*}
+ * @desc    Create product review
+ * @route   POST /api/products/:id/reviews
+ * @access  PRIVATE
+ */
+const reviewProduct = asyncHandler( async ( req, res ) => {
+    const product = await Product.findById( req.params.id );
+
+    if ( !product ) {
+        res.status( 404 );
+        throw new Error('Product not found');
+    }
+
+    const alreadyReviewed = product.reviews.find(
+        ( review ) => review.user === req.user._id
+    );
+
+    if ( alreadyReviewed ) {
+        res.status( 400 );
+        throw new Error('Already reviewed product');
+    }
+
+    const review = {
+        user:   req.user._id,
+        name:   req.user.name,
+        rating: Number( rating ),
+        comment,
+    }
+
+    await product.reviews.push( review );
+    product.numReviews = product.reviews.length;
+
+
+});
+
+export { getProducts, getProductById, createProduct, updateProduct, deleteProduct, reviewProduct };
