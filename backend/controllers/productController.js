@@ -131,8 +131,16 @@ const reviewProduct = asyncHandler( async ( req, res ) => {
     }
 
     await product.reviews.push( review );
+
     product.numReviews = product.reviews.length;
 
+    product.rating =
+        product.reviews.reduce( ( acc, review ) => acc + review.rating, 0 ) /
+        product.reviews.length;
+
+    await product.save();
+
+    res.status( 201 ).json({ message: 'Review added successfully' });
 
 });
 
