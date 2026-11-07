@@ -2,10 +2,23 @@
 import { PRODUCT_URL, UPLOADS_URL } from '../constants';
 
 // SLICES
-import { apiSlice} from "./apiSlice"
+import { apiSlice } from "./apiSlice"
 
 // TYPES
-import type { Product, ProductUpdate, UploadResponse } from "../types"
+import type { Product, ProductUpdate, UploadResponse, Review, AddReview } from "../types"
+
+type GetProductReviewByUserArgs = {
+    product: string,
+    user: string,
+}
+
+type ReviewProductArgs = {
+    product: string,
+    user: string,
+    rating: number,
+    title: string,
+    comment: string,
+}
 
 export const productsApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -57,6 +70,24 @@ export const productsApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: [ 'Product' ],
         }),
+        getProductReviews: builder.query<Review[], string>({
+            query: ( productId ) => ({
+                url: `${ PRODUCT_URL }/${ productId }/reviews`,
+            })
+        }),
+        getProductReviewByUser: builder.query<Review | null, GetProductReviewByUserArgs>({
+            query: ( data ) => ({
+                url: `${ PRODUCT_URL }/${ data.product }/reviews/${ data.user }`,
+            })
+        }),
+        reviewProduct: builder.mutation<AddReview, ReviewProductArgs>({
+            query: ( data ) => ({
+                url: `${ PRODUCT_URL }/${ data.product }/reviews`,
+                method: "POST",
+                body: data,
+            }),
+            invalidatesTags: [ 'Product' ],
+        }),
     })
 })
 
@@ -65,4 +96,8 @@ export const { useGetProductsQuery,
     useCreateProductMutation,
     useUpdateProductMutation,
     useUploadProductImageMutation,
-    useDeleteProductMutation } = productsApiSlice
+    useDeleteProductMutation,
+    useGetProductReviewsQuery,
+    useGetProductReviewByUserQuery,
+    useReviewProductMutation
+} = productsApiSlice
