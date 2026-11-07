@@ -1,5 +1,5 @@
 import asyncHandler from '../middleware/asyncHandler.js';
-import Product from '../models/productModel.js';
+import { Product, Review } from '../models/productModel.js';
 
 /**
  * @type    {(function(*, *, *): void)|*}
@@ -99,6 +99,27 @@ const deleteProduct = asyncHandler( async ( req, res ) => {
     res.status( 200 ).json( "Product deleted successfully" );
 })
 
+/**
+ * @type {(function(*, *, *): void)|*}
+ * @desc    Get all reviews for one product
+ * @route   GET
+ * @access  Public
+ */
+const getReviewsByProductId = asyncHandler( async ( req, res ) => {
+    const reviews = await Review.find({ product: req.params.id } );
+    res.status(200).json( reviews );
+});
+
+/**
+ * @type {(function(*, *, *): void)|*}
+ * @desc    Get single review for product from logged-in user, if exists
+ * @route   GET /api/products/:id/reviews/:user
+ * @access  PRIVATE
+ */
+const getReviewForProductByUserId = asyncHandler( async ( req, res ) => {
+    const review = await Review.findOne({ product: req.params.product, user: req.params.user });
+    res.status( 200 ).json( review );
+})
 
 /**
  * @type {(function(*, *, *): void)|*}
@@ -108,40 +129,39 @@ const deleteProduct = asyncHandler( async ( req, res ) => {
  */
 const reviewProduct = asyncHandler( async ( req, res ) => {
     const product = await Product.findById( req.params.id );
+    const { title, rating, comment} = req.body;
 
     if ( !product ) {
         res.status( 404 );
         throw new Error('Product not found');
     }
 
-    const alreadyReviewed = product.reviews.find(
-        ( review ) => review.user === req.user._id
-    );
+    const alreadyReviewed = await Review.findOne({ _id: product._id, userId: req.user._id });
 
     if ( alreadyReviewed ) {
         res.status( 400 );
         throw new Error('Already reviewed product');
     }
 
-    const review = {
-        user:   req.user._id,
-        name:   req.user.name,
-        rating: Number( rating ),
+    await Review.create({
+        product: product._id,
+        user: req.user._id,
+        title,
+        rating: Number(rating),
         comment,
-    }
-
-    await product.reviews.push( review );
-
-    product.numReviews = product.reviews.length;
-
-    product.rating =
-        product.reviews.reduce( ( acc, review ) => acc + review.rating, 0 ) /
-        product.reviews.length;
-
-    await product.save();
+    });
 
     res.status( 201 ).json({ message: 'Review added successfully' });
 
 });
 
-export { getProducts, getProductById, createProduct, updateProduct, deleteProduct, reviewProduct };
+export {
+    getProducts,
+    getProductById,
+    createProduct,
+    updateProduct,
+    deleteProduct,
+    getReviewsByProductId,
+    getReviewForProductByUserId,
+    reviewProduct
+};
