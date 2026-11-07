@@ -31,6 +31,17 @@ export type User = {
 
 export type UserUpdate = Omit<User, 'createdAt' | 'updatedAt'>;
 
+export type Review = {
+    _id: string,
+    product: string,
+    user: string,
+    title: string,
+    comment: string,
+    rating: number,
+}
+
+export type AddReview = Omit<Review, '_id'>
+
 export type CartItem = {
     _id: string,
     name: string,
