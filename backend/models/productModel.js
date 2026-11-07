@@ -6,7 +6,12 @@ const reviewSchema = new mongoose.Schema({
         required: true,
         ref: 'User',
     },
-    name: {
+    product: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Product',
+    },
+    title: {
         type: String,
         required: true,
     },
@@ -75,6 +80,7 @@ const productSchema = new mongoose.Schema({
     timestamps: true
 })
 
-const Product = mongoose.model('Product', productSchema)
+const Product = mongoose.model('Product', productSchema);
+const Review = mongoose.model('Review', reviewSchema);
 
-export default Product
+export { Product, Review };
