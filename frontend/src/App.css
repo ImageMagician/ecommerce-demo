@@ -9,6 +9,10 @@ input.input-text, textarea.input-text {
     @apply block border rounded w-full border-gray-300 p-2 placeholder-gray-400;
 }
 
+select.input-text {
+    @apply block border rounded min-w-24 border-gray-300 py-1 px-2 placeholder-gray-400;
+}
+
 textarea.input-text {
     height: 8rem;
 }
