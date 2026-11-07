@@ -10,6 +10,8 @@ import {getProducts,
     createProduct,
     updateProduct,
     deleteProduct,
+    getReviewsByProductId,
+    getReviewForProductByUserId,
     reviewProduct } from '../controllers/productController.js';
 
 const router = express.Router();
@@ -23,7 +25,11 @@ router.route('/:id')
     .put   ( protect, isAdmin, updateProduct )     // Admin: update product
     .delete( protect, isAdmin, deleteProduct );    // Admin: delete product
 
-router.route('/:id/review')
+router.route('/:id/reviews')
+    .get ( getReviewsByProductId )
     .post( protect, reviewProduct );
+
+router.route('/:id/reviews/:user')
+    .get( protect, getReviewForProductByUserId );
 
 export default router;
