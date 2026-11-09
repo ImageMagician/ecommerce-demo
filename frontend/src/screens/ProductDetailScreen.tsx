@@ -31,7 +31,6 @@ const ProductDetailScreen = () => {
     const { id: productId } = useParams();
 
     const { data: product, isLoading, error }                  = useGetProductDetailsQuery( productId ?? skipToken );
-
     const { data: reviews, isLoading: loadingReviews }         = useGetProductReviewsQuery( productId ?? skipToken );
     const { data: userReview, isLoading: loadingUserReview }   = useGetProductReviewByUserQuery( productId && userInfo?._id ? { product: productId, user: userInfo._id } : skipToken );
     const [ createReview, { isLoading: loadingCreateReview } ] = useReviewProductMutation();
