@@ -1,5 +1,6 @@
 import asyncHandler from '../middleware/asyncHandler.js';
-import { Product, Review } from '../models/productModel.js';
+import { Product }  from '../models/productModel.js';
+import { Review }   from '../models/reviewModel.js';
 
 /**
  * @type    {(function(*, *, *): void)|*}
