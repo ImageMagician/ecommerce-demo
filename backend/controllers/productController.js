@@ -117,7 +117,12 @@ const getReviewsByProductId = asyncHandler( async ( req, res ) => {
  * @access  PRIVATE
  */
 const getReviewForProductByUserId = asyncHandler( async ( req, res ) => {
-    const review = await Review.findOne({ product: req.params.product, user: req.params.user });
+    const review = await Review.findOne({ product: req.params.id, user: req.params.user });
+
+    if ( !review ) {
+        res.status(200).json(null);
+    }
+
     res.status( 200 ).json( review );
 })
 
