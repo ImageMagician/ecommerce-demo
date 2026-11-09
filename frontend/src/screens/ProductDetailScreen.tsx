@@ -107,13 +107,12 @@ const ProductDetailScreen = () => {
             comment
         }
 
-        const res = await createReview( addReview );
-
-        if ( "error" in res ) {
-            toast.error('There was an error adding your review.');
-        }
-        else {
+        try {
+            await createReview( addReview );
             toast.success("Your review has been added successfully.");
+        }
+        catch {
+            toast.error('There was an error adding your review.');
         }
     }
 
@@ -192,21 +191,17 @@ const ProductDetailScreen = () => {
                                                 </h2>
                                                 { loadingReviews && <Loader /> }
                                                 { reviews && reviews.length > 0 ?
-                                                    <article className="py-2 border-b border-gray-300">
-                                                    {
-                                                        reviews.map( ( review: Review ) => (
-                                                            <div key={ review._id }>
-                                                                { review.rating }
-                                                                <h3 className="font-bold mb-1">
-                                                                    { review.title }
-                                                                </h3>
-                                                                <p>
-                                                                    { review.comment }
-                                                                </p>
-                                                            </div>
-                                                        ))
-                                                    }
-                                                    </article>
+                                                    reviews.map( ( review: Review ) => (
+                                                        <article className="mt-1 py-3 border-t border-gray-300" key={ review._id }>
+                                                            <Rating value={ review.rating } />
+                                                            <h3 className="font-bold mb-1 mt-2">
+                                                                { review.title }
+                                                            </h3>
+                                                            <p>
+                                                                { review.comment }
+                                                            </p>
+                                                        </article>
+                                                    ))
                                                     : <div className="text-gray-400">No reviews yet.</div>
                                                 }
                                                 { loadingUserReview && <Loader /> }
