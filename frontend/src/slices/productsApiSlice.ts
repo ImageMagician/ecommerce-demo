@@ -86,7 +86,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
                 method: "POST",
                 body: data,
             }),
-            invalidatesTags: [ 'Product' ],
+            invalidatesTags: ( _result, _error, args) => [{ type: 'Review', id: args.product }],
         }),
     })
 })
