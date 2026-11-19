@@ -157,6 +157,8 @@ const reviewProduct = asyncHandler( async ( req, res ) => {
         comment,
     });
 
+    await Review.updateProductStats( req.params.id );
+
     res.status( 201 ).json({ message: 'Review added successfully' });
 
 });
