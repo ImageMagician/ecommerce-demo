@@ -22,7 +22,7 @@ const Paginate = ( { pages, page }: PaginateProps ) => {
 
     return (
         <nav arial-label="Pagination" className="pagination">
-            {
+{/*            {
                 page > 1 ? (
                     <Link to={ buildLink( page - 1 ) } className="pagination__item">
                         Prev
@@ -33,30 +33,21 @@ const Paginate = ( { pages, page }: PaginateProps ) => {
                         Prev
                     </span>
                 )
-            }
+            }*/}
 
             {
-                pageNumbers.map( ( n ) =>
-                    <span key={ n }>
-                    {
-                        ( page === n ) ?
-                        <span className="pagination__item pagination__item--active"
-
-                        >
-                            { n }
-                        </span>
-                        :
-                        <Link to={ buildLink( n ) }
-                              aria-current={ n === page ? 'page' : undefined }
-                              className="pagination__item"
-                        >
-                            { n }
-                        </Link>
-                    }
-                    </span>)
+                pageNumbers.map( ( n ) => (
+                    <Link to={ buildLink( n ) }
+                          key={ n }
+                          aria-current={ n === page ? 'page' : undefined }
+                          className={ `pagination__item${ n === page ? ' pagination__item--active' : '' }` }
+                    >
+                        { n }
+                    </Link>
+                ))
             }
 
-            {
+            {/*{
                 page < pages ? (
                     <Link to={ buildLink( page + 1 ) }
                           className="pagination__item"
@@ -69,7 +60,7 @@ const Paginate = ( { pages, page }: PaginateProps ) => {
                         Next
                     </span>
                 )
-            }
+            }*/}
         </nav>
     )
 }
