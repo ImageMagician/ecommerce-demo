@@ -1,0 +1,77 @@
+import { Link, useSearchParams } from "react-router-dom";
+
+type PaginateProps = {
+    pages: number,
+    page: number,
+}
+
+const Paginate = ( { pages, page }: PaginateProps ) => {
+    const [ searchParams ] = useSearchParams();
+
+    // Nothing to paginate
+    if ( pages <= 1 ) return null;
+
+    // keep any other query params (keyword, category, etc.) and only change pageNumber
+    const buildLink = ( n: number )=> {
+        const params = new URLSearchParams( searchParams );
+        params.set('pageNumber', String( n ) );
+        return `?${ params.toString() }`;
+    }
+
+    const pageNumbers = Array.from( { length: pages }, ( _, i ) => i + 1 );
+
+    return (
+        <nav arial-label="Pagination" className="pagination">
+            {
+                page > 1 ? (
+                    <Link to={ buildLink( page - 1 ) } className="pagination__item">
+                        Prev
+                    </Link>
+                )
+                : (
+                    <span className="pagination__item pagination__item--disabled">
+                        Prev
+                    </span>
+                )
+            }
+
+            {
+                pageNumbers.map( ( n ) =>
+                    <span key={ n }>
+                    {
+                        ( page === n ) ?
+                        <span className="pagination__item pagination__item--active"
+
+                        >
+                            { n }
+                        </span>
+                        :
+                        <Link to={ buildLink( n ) }
+                              aria-current={ n === page ? 'page' : undefined }
+                              className="pagination__item"
+                        >
+                            { n }
+                        </Link>
+                    }
+                    </span>)
+            }
+
+            {
+                page < pages ? (
+                    <Link to={ buildLink( page + 1 ) }
+                          className="pagination__item"
+                    >
+                        Next
+                    </Link>
+                )
+                : (
+                    <span className="pagination__item pagination__item--disabled">
+                        Next
+                    </span>
+                )
+            }
+        </nav>
+    )
+}
+
+export default Paginate;
