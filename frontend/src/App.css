@@ -51,11 +51,20 @@ textarea.input-text {
 
 /*** Pagination ***/
 .pagination {
-    @apply mt-6 text-center p-3 border rounded border-gray-200
+    @apply mt-6 /*text-center p-3 border rounded border-gray-200*/
 }
 
 .pagination__item {
-    @apply px-2.5 py-1 mx-1 text-blue-500 hover:text-blue-700 hover:bg-gray-100 rounded leading-none transition-colors duration-200 ease-in-out
+    @apply px-2.5 py-1 text-blue-500 hover:text-blue-700 hover:bg-gray-100 leading-none transition-colors duration-200 ease-in-out border border-gray-300 border-l-0
+}
+
+.pagination__item:first-child,
+.pagination__item--active:first-child {
+    @apply rounded-l-sm border-l
+}
+
+.pagination__item:last-child {
+    @apply rounded-r-sm
 }
 
 .pagination__item--disabled {
@@ -63,5 +72,5 @@ textarea.input-text {
 }
 
 .pagination__item--active {
-    @apply bg-blue-500 hover:bg-blue-500 text-white hover:text-white cursor-default
+    @apply bg-blue-500 hover:bg-blue-500 text-white hover:text-white cursor-default border-blue-500
 }
