@@ -22,19 +22,6 @@ const Paginate = ( { pages, page }: PaginateProps ) => {
 
     return (
         <nav arial-label="Pagination" className="pagination">
-{/*            {
-                page > 1 ? (
-                    <Link to={ buildLink( page - 1 ) } className="pagination__item">
-                        Prev
-                    </Link>
-                )
-                : (
-                    <span className="pagination__item pagination__item--disabled">
-                        Prev
-                    </span>
-                )
-            }*/}
-
             {
                 pageNumbers.map( ( n ) => (
                     <Link to={ buildLink( n ) }
@@ -46,21 +33,6 @@ const Paginate = ( { pages, page }: PaginateProps ) => {
                     </Link>
                 ))
             }
-
-            {/*{
-                page < pages ? (
-                    <Link to={ buildLink( page + 1 ) }
-                          className="pagination__item"
-                    >
-                        Next
-                    </Link>
-                )
-                : (
-                    <span className="pagination__item pagination__item--disabled">
-                        Next
-                    </span>
-                )
-            }*/}
         </nav>
     )
 }
