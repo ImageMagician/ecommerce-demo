@@ -5,6 +5,7 @@ import { useSearchParams } from "react-router-dom";
 import ProductCard  from "../components/ProductCard";
 import Loader       from "../components/Loader";
 import Message      from "../components/Message";
+import Paginate     from "../components/Paginate";
 
 // SLICES
 import { useGetProductsQuery } from "../slices/productsApiSlice.ts";
@@ -44,6 +45,9 @@ const HomeScreen = () => {
                                     <ProductCard key={product._id} product={product} />
                                 ))}
                             </div>
+                                { data &&
+                                    <Paginate pages={ data.pages } page={ data.page } />
+                                }
                         </>)
             }
         </>
