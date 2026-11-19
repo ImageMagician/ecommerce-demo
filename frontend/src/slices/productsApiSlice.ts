@@ -5,7 +5,7 @@ import { PRODUCT_URL, UPLOADS_URL } from '../constants';
 import { apiSlice } from "./apiSlice"
 
 // TYPES
-import type { Product, ProductUpdate, UploadResponse, Review, AddReview } from "../types"
+import type { Product, ProductUpdate, ProductsResponse, UploadResponse, Review, AddReview } from "../types"
 
 type GetProductReviewByUserArgs = {
     product: string,
@@ -22,9 +22,10 @@ type ReviewProductArgs = {
 
 export const productsApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getProducts: builder.query<Product[], void>({
-            query: () => ({
+        getProducts: builder.query<ProductsResponse, { pageNumber?: number }>({
+            query: ({ pageNumber = 1 }) => ({
                 url: PRODUCT_URL,
+                params: { pageNumber }
             }),
             providesTags: [ 'Product' ],
             keepUnusedDataFor: 5,
