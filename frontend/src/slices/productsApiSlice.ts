@@ -34,10 +34,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
                 url: `${ PRODUCT_URL }/${ productId }`,
             }),
             providesTags: ( _result, _error, productId ) => [
-                {
-                    type: "Product",
-                    id: productId
-                },
+                { type: "Product", id: productId },
             ],
             keepUnusedDataFor: 5
         }),
@@ -73,12 +70,18 @@ export const productsApiSlice = apiSlice.injectEndpoints({
         getProductReviews: builder.query<Review[], string>({
             query: ( productId ) => ({
                 url: `${ PRODUCT_URL }/${ productId }/reviews`,
-            })
+            }),
+            providesTags: ( _result, _error, productId ) => [
+                { type: 'Review', id: productId }
+            ],
         }),
         getProductReviewByUser: builder.query<Review | null, GetProductReviewByUserArgs>({
             query: ( data ) => ({
                 url: `${ PRODUCT_URL }/${ data.product }/reviews/${ data.user }`,
-            })
+            }),
+            providesTags: ( _result, _error, arg ) => [
+                { type: "Review", id: arg.product },
+            ],
         }),
         reviewProduct: builder.mutation<AddReview, ReviewProductArgs>({
             query: ( data ) => ({
@@ -86,7 +89,10 @@ export const productsApiSlice = apiSlice.injectEndpoints({
                 method: "POST",
                 body: data,
             }),
-            invalidatesTags: ( _result, _error, args) => [{ type: 'Review', id: args.product }],
+            invalidatesTags: ( _result, _error, args) => [
+                { type: 'Review', id: args.product },
+                { type: 'Product', id: args.product },
+            ],
         }),
     })
 })
