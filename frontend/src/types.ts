@@ -14,6 +14,12 @@ export type Product = {
 
 export type ProductUpdate = Omit<Product, "rating" | "numReviews">;
 
+export type ProductsResponse = {
+    products: Product[],
+    page: number,
+    pages: number
+}
+
 export interface UploadResponse {
     message: string;
     image: string;
