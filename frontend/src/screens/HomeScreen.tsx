@@ -1,15 +1,25 @@
-import type { Product } from "../types.js";
-import ProductCard from "../components/ProductCard";
+// GENERAL
+import { useSearchParams } from "react-router-dom";
+
+// COMPONENTS
+import ProductCard  from "../components/ProductCard";
+import Loader       from "../components/Loader";
+import Message      from "../components/Message";
+
+// SLICES
 import { useGetProductsQuery } from "../slices/productsApiSlice.ts";
-import Loader from "../components/Loader";
-import Message from "../components/Message";
+
+// TYPES
+import type { Product } from "../types.js";
 
 interface ApiError {
     message: string;
 }
 
 const HomeScreen = () => {
-    const { data: products, isLoading, error } = useGetProductsQuery();
+    const [ searchParams ] = useSearchParams();
+    const page = Number( searchParams.get( 'pageNumber' ) ) || 1;
+    const { data, isLoading, error } = useGetProductsQuery({ pageNumber: page });
 
     return (
         <>
@@ -30,7 +40,7 @@ const HomeScreen = () => {
                         : (<>
                             <h1 className={`text-3xl font-semibold mb-3`}>Latest Products</h1>
                             <div className={`grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6`}>
-                                {products?.map((product:Product) => (
+                                {data?.products.map((product:Product) => (
                                     <ProductCard key={product._id} product={product} />
                                 ))}
                             </div>
