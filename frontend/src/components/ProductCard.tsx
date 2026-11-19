@@ -10,7 +10,7 @@ const ProductCard = ({product}:ProductCardProps) => {
     return (
         <Link to={`/product/${product._id}`} className="border border-gray-300 p-4 rounded-md shadow hover:scale-[102%] transition-all">
             <div className="relative pb-8 h-full z-0">
-                <img src={product.image} alt={product.name} />
+                <img src={product.image} alt={product.name} className="rounded" />
                 <div className="pt-3">
                     <h3 className={`font-semibold mb-2`}>{product.name}</h3>
                     <div><Rating value={product.rating} text={product.numReviews} /></div>
