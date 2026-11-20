@@ -12,9 +12,10 @@ const Paginate = ( { pages, page }: PaginateProps ) => {
     if ( pages <= 1 ) return null;
 
     // keep any other query params (keyword, category, etc.) and only change pageNumber
-    const buildLink = ( n: number )=> {
+    const buildLink = ( n: number, k?: string )=> {
         const params = new URLSearchParams( searchParams );
         params.set('pageNumber', String( n ) );
+        k ? params.set( 'keyword', k ) : undefined;
         return `?${ params.toString() }`;
     }
 
