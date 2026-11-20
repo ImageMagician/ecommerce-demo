@@ -1,15 +1,19 @@
+// GENERAL
 import { Link, useNavigate }            from 'react-router-dom';
 import { useSelector, useDispatch }     from "react-redux";
 import { addToCart, removeFromCart }    from "../slices/cartSlice.ts";
-
 import { FontAwesomeIcon }              from "@fortawesome/react-fontawesome";
 import {  faTrash }                     from '@fortawesome/free-solid-svg-icons';
 
+// COMPONENTS
 import Message                          from "../components/Message";
 import QtyPicker                        from "../components/QtyPicker";
+import Meta                             from "../components/Meta.tsx";
 
+// UTILITIES
 import { increaseQty, decreaseQty, clampQty } from "../utils/quantity";
 
+// TYPES
 import type { RootState } from '../store';
 import type { CartItem, Product} from '../types';
 
@@ -41,6 +45,7 @@ const CartScreen = () => {
             ) :
             (
                 <>
+                    <Meta />
                     <h2 className="flex items-center justify-between gap-8 border-b border-gray-300">
                         <span className="block w-37.5 p-2">Image</span>
                         <span className="w-full p-2">Product</span>

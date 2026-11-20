@@ -6,6 +6,7 @@ import { toast }                          from "react-toastify";
 
 // COMPONENTS
 import FormContainer from '../components/FormContainer';
+import Meta          from "../components/Meta.tsx";
 
 // SLICES
 import { useLoginMutation } from "../slices/usersApiSlice.ts";
@@ -50,6 +51,7 @@ const LoginScreen = () => {
 
     return (
         <FormContainer>
+            <Meta />
             <form onSubmit={ submitHandler }>
                 <h1 className="mb-4 text-3xl font-bold">Sign In</h1>
                 <div className="mb-4">

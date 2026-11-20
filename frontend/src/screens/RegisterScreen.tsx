@@ -6,6 +6,7 @@ import { toast }                          from "react-toastify";
 
 // COMPONENTS
 import FormContainer from '../components/FormContainer';
+import Meta          from '../components/Meta';
 
 // SLICES
 import { useRegisterMutation } from "../slices/usersApiSlice.ts";
@@ -57,6 +58,7 @@ const RegisterScreen = () => {
 
     return (
         <FormContainer>
+            <Meta title="Register Account | TechStash" />
             <form onSubmit={ submitHandler }>
                 <h1 className="mb-4 text-3xl font-bold">Register</h1>
                 <div className="mb-4">

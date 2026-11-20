@@ -6,6 +6,7 @@ import { useNavigate }              from "react-router-dom";
 // COMPONENTS
 import FormContainer from "../components/FormContainer";
 import CheckoutSteps from "../components/CheckoutSteps.tsx";
+import Meta          from "../components/Meta.tsx";
 
 // SLICES
 import { savePaymentMethod } from "../slices/cartSlice.ts";
@@ -37,6 +38,7 @@ const PaymentScreen = () => {
 
     return (
         <FormContainer>
+            <Meta title="Payment | TechStash" />
             <CheckoutSteps step1 step2 step3 />
             <form onSubmit={submitHandler}>
                 <h1 className="text-3xl font-bold mb-4">Payment Method</h1>

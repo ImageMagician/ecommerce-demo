@@ -11,6 +11,7 @@ import { DISPATCH_ACTION, PayPalButtons, SCRIPT_LOADING_STATE, usePayPalScriptRe
 import Message      from "../components/Message";
 import Loader       from "../components/Loader";
 import ErrorMessage from "../components/ErrorMessage.tsx";
+import Meta         from "../components/Meta.tsx";
 
 // SLICES
 import { useGetOrderDetailsQuery, useGetPayPalClientIdQuery, usePayOrderMutation, useDeliverOrderMutation } from "../slices/ordersApiSlice.ts";
@@ -108,7 +109,8 @@ const OrderScreen = () => {
         });
     }
 
-    return (
+    return <>
+        <Meta />
         <div className="grid grid-cols-12 gap-8 w-full">
             <div className="col-span-9">
                 <h1 className="text-xs text-gray-400 mb-4">{ order._id }</h1>
@@ -241,7 +243,7 @@ const OrderScreen = () => {
             </div>
 
         </div>
-    )
+    </>
 }
 
 export default OrderScreen;

@@ -10,10 +10,12 @@ import { addToCart }                          from "../slices/cartSlice";
 import { increaseQty, decreaseQty, clampQty } from "../utils/quantity.ts";
 import { toast }                              from "react-toastify";
 
-import Rating    from "../components/Rating.tsx";
+// COMPONENTS
+import Rating    from "../components/Rating";
 import Loader    from "../components/Loader";
 import Message   from "../components/Message";
-import QtyPicker from "../components/QtyPicker.tsx";
+import QtyPicker from "../components/QtyPicker";
+import Meta      from "../components/Meta";
 
 import type { Product, Review, AddReview }   from "../types.ts";
 import type { RootState } from "../store";
@@ -140,6 +142,7 @@ const ProductDetailScreen = () => {
                             <>
                                 { product
                                     ? <>
+                                        <Meta title={ `${ product.name } | TechStash` } />
                                         <div className="sm:flex sm:gap-8">
                                             <div className={`sm:w-1/2 mb-4 sm:mb-0`}>
                                                 <img src={product.image} alt={product.name} className={`w-full rounded-md`}/>

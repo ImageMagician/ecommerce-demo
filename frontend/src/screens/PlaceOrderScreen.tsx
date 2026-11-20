@@ -7,6 +7,7 @@ import { toast }                    from 'react-toastify';
 // COMPONENTS
 import Message       from '../components/Message';
 import CheckoutSteps from "../components/CheckoutSteps.tsx";
+import Meta          from "../components/Meta.tsx";
 
 // SLICES
 import { useCreateOrderMutation } from "../slices/ordersApiSlice.ts";
@@ -92,6 +93,7 @@ const PlaceOrderScreen = () => {
 
     return (
         <>
+            <Meta title="Place Order | TechStash" />
             <CheckoutSteps step1 step2 step3 step4 />
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
                 <div className="sm:col-span-2">

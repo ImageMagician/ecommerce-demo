@@ -4,7 +4,8 @@ import { useNavigate }              from "react-router-dom";
 import type { RootState }           from '../store.ts';
 
 import FormContainer                from "../components/FormContainer";
-import CheckoutSteps                from "../components/CheckoutSteps.tsx";
+import CheckoutSteps                from "../components/CheckoutSteps";
+import Meta                         from '../components/Meta';
 
 import { saveShippingAddress }      from "../slices/cartSlice.ts";
 
@@ -28,6 +29,7 @@ const ShippingScreen = () => {
     }
 
     return <FormContainer>
+        <Meta title="Shipping Information | TechStash" />
         <CheckoutSteps step1 step2 />
         <h1 className="text-3xl font-bold mb-4">Shipping Address</h1>
         <form onSubmit={ submitHandler }>

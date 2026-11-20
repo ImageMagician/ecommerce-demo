@@ -9,6 +9,7 @@ import { Link }                     from "react-router-dom";
 import Loader       from "../components/Loader";
 import Message      from "../components/Message.tsx";
 import ErrorMessage from "../components/ErrorMessage.tsx";
+import Meta         from "../components/Meta"
 
 // SLICES
 import { useProfileMutation }  from "../slices/usersApiSlice.ts";
@@ -68,6 +69,7 @@ const ProfileScreen = () => {
 
     return (
         <>
+            <Meta title="Profile | TechStash" />
         <h1 className="text-2xl text-gray-400 mb-4">Profile</h1>
 
         <div className="grid grid-cols-12 gap-8">
