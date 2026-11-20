@@ -84,7 +84,7 @@ const ProductListScreen = () => {
                                     <img src={ product.image } alt={ product.name } className="object-cover rounded" />
                                 </div>
                                 <div className="col-span-5">
-                                    <Link to={`/admin/product/${ product._id }`} className="text-blue-500 hover:text-blue-600 hover:underline">
+                                    <Link to={`/admin/products/${ product._id }`} className="text-blue-500 hover:text-blue-600 hover:underline">
                                         { product.name }
                                     </Link>
                                 </div>
