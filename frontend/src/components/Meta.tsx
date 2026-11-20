@@ -7,7 +7,7 @@ interface MetaProps {
 }
 
 const Meta = ({
-                  title = "Welcome to TechStash",
+                  title = "TechStash: The tech you want, the prices you love",
                   description = "Location for all your tech goodies",
                   keywords = "electronics, buy electronics, cheap electronics",
               }: MetaProps) => {
