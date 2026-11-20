@@ -2,6 +2,7 @@ import { apiSlice }   from "./apiSlice.ts";
 import { ORDERS_URL, PAYPAL_URL } from "../constants.ts";
 
 export interface OrderItem {
+    _id:          string;
     product:      string;
     name:         string;
     image:        string;
