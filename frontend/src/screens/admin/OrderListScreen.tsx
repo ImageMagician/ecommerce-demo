@@ -1,6 +1,7 @@
 // GENERAL
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
+import { Fragment } from 'react';
 
 // COMPONENTS
 import Message      from "../../components/Message";
@@ -46,9 +47,9 @@ const OrderListScreen = () => {
                                        <div key={order._id} className="grid grid-cols-7 gap-8 text-sm order-list-item items-center">
                                            <div className="col-span-3">
                                                <Link to={`/order/${ order._id }`} className="text-blue-500 hover:text-blue-600 hover:underline">
-                                                   { order.orderItems.map( item => <>
+                                                   { order.orderItems.map( item => <Fragment key={item._id}>
                                                        <span className="me-1">{ item.name } ({ item.qty })</span><br />
-                                                   </>
+                                                   </Fragment>
                                                    ) }
                                                </Link>
                                            </div>
