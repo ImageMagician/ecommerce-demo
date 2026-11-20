@@ -45,7 +45,7 @@ const CartScreen = () => {
             ) :
             (
                 <>
-                    <Meta />
+                    <Meta title="Shopping Cart | TechStash" />
                     <h2 className="flex items-center justify-between gap-8 border-b border-gray-300">
                         <span className="block w-37.5 p-2">Image</span>
                         <span className="w-full p-2">Product</span>
