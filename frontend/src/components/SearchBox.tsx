@@ -3,7 +3,11 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { FontAwesomeIcon }              from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass }            from "@fortawesome/free-solid-svg-icons";
 
-const SearchBox = () => {
+type SearchBoxProps = {
+    basepath?: string,
+}
+
+const SearchBox = ( { basepath = '/'}: SearchBoxProps ) => {
     const [ searchParams ] = useSearchParams();
     const navigate = useNavigate();
     const [ search, setSearch ] = useState( searchParams.get( 'keyword' ) ?? '');
@@ -19,10 +23,10 @@ const SearchBox = () => {
 
         if ( trimmed ) {
             // new search on page 1
-            navigate( `/?keyword=${ encodeURIComponent( trimmed ) }&pageNumber=1`)
+            navigate( `${ basepath }?keyword=${ encodeURIComponent( trimmed ) }&pageNumber=1`)
         }
         else {
-            navigate( '/' );
+            navigate( basepath );
         }
     }
     return <>
