@@ -8,6 +8,7 @@ import Message          from "../components/Message";
 import Paginate         from "../components/Paginate";
 import SearchBox        from "../components/SearchBox";
 import ProductCarousel  from "../components/ProductCarousel";
+import Meta             from "../components/Meta.tsx";
 
 // SLICES
 import { useGetProductsQuery } from "../slices/productsApiSlice.ts";
@@ -28,6 +29,7 @@ const HomeScreen = () => {
 
     return (
         <>
+            <Meta />
             {
                 isLoading ? (
                         <Loader />
