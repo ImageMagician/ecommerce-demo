@@ -22,10 +22,13 @@ type ReviewProductArgs = {
 
 export const productsApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getProducts: builder.query<ProductsResponse, { pageNumber?: number }>({
-            query: ({ pageNumber = 1 }) => ({
+        getProducts: builder.query<ProductsResponse, { keyword?: string, pageNumber?: number }>({
+            query: ({ keyword, pageNumber = 1 }) => ({
                 url: PRODUCT_URL,
-                params: { pageNumber }
+                params: {
+                    pageNumber,
+                    keyword,
+                },
             }),
             providesTags: [ 'Product' ],
             keepUnusedDataFor: 5,
