@@ -6,7 +6,11 @@ interface MetaProps {
     keywords: string,
 }
 
-const Meta = ({ title, description, keywords }: MetaProps) => {
+const Meta = ({
+                  title = "Welcome to TechStash",
+                  description = "Location for all your tech goodies",
+                  keywords = "electronics, buy electronics, cheap electronics",
+              }: MetaProps) => {
     return (
         <Helmet>
             <title>{ title }</title>
@@ -15,11 +19,5 @@ const Meta = ({ title, description, keywords }: MetaProps) => {
         </Helmet>
     )
 }
-
-Meta.defaultProps = {
-    title: "Welcome to TechStash",
-    description: "Location for all your tech goodies",
-    keywords: "electronics, buy electronics, cheap electronics",
-};
 
 export default Meta;
