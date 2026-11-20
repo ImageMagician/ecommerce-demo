@@ -6,6 +6,7 @@ import ProductCard  from "../components/ProductCard";
 import Loader       from "../components/Loader";
 import Message      from "../components/Message";
 import Paginate     from "../components/Paginate";
+import SearchBox    from "../components/SearchBox";
 
 // SLICES
 import { useGetProductsQuery } from "../slices/productsApiSlice.ts";
@@ -20,7 +21,9 @@ interface ApiError {
 const HomeScreen = () => {
     const [ searchParams ] = useSearchParams();
     const page = Number( searchParams.get( 'pageNumber' ) ) || 1;
-    const { data, isLoading, error } = useGetProductsQuery({ pageNumber: page });
+    const keyword = searchParams.get( 'keyword' ) || undefined;
+
+    const { data, isLoading, error } = useGetProductsQuery({ keyword, pageNumber: page });
 
     return (
         <>
@@ -39,7 +42,10 @@ const HomeScreen = () => {
                             </Message>
                         )
                         : (<>
-                            <h1 className={`text-3xl font-semibold mb-3`}>Latest Products</h1>
+                            <div className="flex justify-between items-center mb-4">
+                                <h1 className={`text-3xl font-semibold mb-3`}>Latest Products</h1>
+                                <SearchBox />
+                            </div>
                             <div className={`grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6`}>
                                 {data?.products.map((product:Product) => (
                                     <ProductCard key={product._id} product={product} />
