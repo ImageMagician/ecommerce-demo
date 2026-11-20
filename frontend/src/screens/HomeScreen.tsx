@@ -2,11 +2,12 @@
 import { useSearchParams } from "react-router-dom";
 
 // COMPONENTS
-import ProductCard  from "../components/ProductCard";
-import Loader       from "../components/Loader";
-import Message      from "../components/Message";
-import Paginate     from "../components/Paginate";
-import SearchBox    from "../components/SearchBox";
+import ProductCard      from "../components/ProductCard";
+import Loader           from "../components/Loader";
+import Message          from "../components/Message";
+import Paginate         from "../components/Paginate";
+import SearchBox        from "../components/SearchBox";
+import ProductCarousel  from "../components/ProductCarousel";
 
 // SLICES
 import { useGetProductsQuery } from "../slices/productsApiSlice.ts";
@@ -42,6 +43,9 @@ const HomeScreen = () => {
                             </Message>
                         )
                         : (<>
+                            <div className="my-4">
+                                <ProductCarousel />
+                            </div>
                             <div className="flex justify-between items-center mb-4">
                                 <h1 className={`text-3xl font-semibold mb-3`}>Latest Products</h1>
                                 <SearchBox />
