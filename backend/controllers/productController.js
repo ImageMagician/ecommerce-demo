@@ -9,15 +9,21 @@ import { Review }   from '../models/reviewModel.js';
  * @access  Public
  */
 const getProducts = asyncHandler( async (req, res) => {
-    const pageSize = 4;
+    const pageSize = 8;
     const page     = Number( req.query.pageNumber ) || 1;
-    const count    = await Product.countDocuments({});
 
-    const products = await Product.find({})
+    // Search keyword
+    // force it to string
+    const raw = typeof req.query.keyword === 'string' ? req.query.keyword.trim() : undefined;
+
+    const keyword = raw ? { name: { $regex: raw.replace( /[.*+?^${}()|[\]\\]/g, '\\$&' ), $options: 'i' } } : {};
+
+    const count    = await Product.countDocuments({ ...keyword });
+
+    const products = await Product.find({ ...keyword })
         .sort({ createdAt: -1, _id: 1 })
         .limit( pageSize )
         .skip( pageSize * ( page - 1 ) );
-    console.log(products);
 
     res.json({products, page, pages: Math.ceil( count / pageSize )});
 });
