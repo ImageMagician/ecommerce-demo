@@ -8,7 +8,8 @@ import { useSearchParams }  from "react-router-dom";
 // COMPONENTS
 import Loader       from "../../components/Loader";
 import ErrorMessage from "../../components/ErrorMessage";
-import Paginate     from "../../components/Paginate.tsx";
+import Paginate     from "../../components/Paginate";
+import SearchBox    from "../../components/SearchBox"
 
 // SLICES
 import { useGetProductsQuery, useCreateProductMutation, useDeleteProductMutation } from "../../slices/productsApiSlice.ts";
@@ -19,7 +20,9 @@ import type { Product } from "../../types.ts";
 const ProductListScreen = () => {
     const [ searchParams ] = useSearchParams();
     const page = Number( searchParams.get( 'pageNumber' ) );
-    const { data, isLoading }                   = useGetProductsQuery( { pageNumber: page });
+    const keyword = searchParams.get( 'keyword' ) || undefined;
+
+    const { data, isLoading }                             = useGetProductsQuery( { keyword, pageNumber: page });
     const [ createProduct, { isLoading: loadingCreate } ] = useCreateProductMutation();
     const [ deleteProduct, { isLoading: loadingDelete } ] = useDeleteProductMutation();
 
@@ -48,10 +51,11 @@ const ProductListScreen = () => {
 
 
     return <>
-        <div className="flex justify-between items-center mb-5">
-            <h1 className="text-3xl text-gray-500">Product List</h1>
+        <div className="flex gap-6 items-center mb-5">
+            <h1 className="text-3xl text-gray-500 w-full">Product List</h1>
+            <SearchBox basepath="/admin/products" />
             <button type="button"
-                    className="primary-button"
+                    className="primary-button whitespace-nowrap"
                     onClick={ createProductHandler }
             >
                 + Add Product
