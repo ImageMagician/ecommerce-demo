@@ -72,9 +72,9 @@ const OrderListScreen = () => {
                                 }
                             </div>
 
-                        : <>
-                            no orders found
-                        </>
+                        : <div className="py-12 text-center text-xl font-semibold text-gray-400">
+                            No orders found
+                        </div>
                     }
                 </>
         }
