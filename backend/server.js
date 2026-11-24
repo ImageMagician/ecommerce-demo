@@ -16,7 +16,8 @@ import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 dotenv.config();
 
-const port = process.env.PORT || "http://localhost:8000";
+const __dirname = path.resolve();
+const port = process.env.PORT || "8000";
 
 connectDB();
 
@@ -36,11 +37,15 @@ app.use( '/api/orders',   orderRoutes );
 app.use( '/api/upload',   uploadRoutes );
 app.use( '/uploads', express.static( path.join( process.cwd(), 'uploads' ) ) );
 
+app.get( '/api/config/paypal', ( req, res ) =>
+    res.send({ clientId: process.env.PAYPAL_CLIENT_ID } )
+);
+
 if ( process.env.NODE_ENV === 'production' ) {
-    app.use( express.static( path.join( __dirname, '/frontend/build' ) ) );
+    app.use( express.static( path.join( __dirname, '/frontend/dist' ) ) );
 
     // Any route that is not API will be directed to index.html
-    app.get('*', ( req, res ) =>
+    app.get('/{*splat}', ( req, res ) =>
         res.sendFile( path.resolve( __dirname, 'frontend', 'dist', 'index.html' ) )
     );
 }
@@ -49,13 +54,6 @@ else {
         res.send('API is running...');
     });
 }
-
-app.get( '/api/config/paypal', ( req, res ) =>
-    res.send({ clientId: process.env.PAYPAL_CLIENT_ID } )
-);
-
-const __dirname = path.resolve();
-app.use ( '/uploads', express.static( path.join( __dirname, '/uploads' ) ) );
 
 // errorMiddleware
 app.use( notFound );
